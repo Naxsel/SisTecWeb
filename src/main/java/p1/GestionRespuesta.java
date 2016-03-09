@@ -19,6 +19,8 @@ public final class GestionRespuesta {
 		/* No aceptaria esto: "/./estoy_en_el_directorio_correcto.txt" 
 		 * Ruta correcta 
 		 */
+
+		System.out.println(ruta);
 		if (ruta.lastIndexOf('/') == 0
 				&& ((ruta.length() < 3) 
 				    || (!ruta.substring(1,3).equals("src/main")))) {

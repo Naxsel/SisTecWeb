@@ -13,16 +13,19 @@ public class Main {
 	    
 	    /* Si hay argumentos tomamos el primero como puerto */
 		try {
-		    if (args.length == 2) {
-			    PORT = Integer.parseInt(args[1]);
-			    switch (args[0]) {
-			        case "-t":  ServidorThread st = new ServidorThread(PORT);
-			                    break;
-			        default:    System.out.println("Main -t|-s puerto\n");
-			    }
-		    } else {
-		        System.out.println("Main -t|-s puerto\n");
-		    }
+			PORT = Integer.parseInt("8080");
+			ServidorThread st = new ServidorThread(PORT);
+//		    if (args.length == 2) {
+//			    PORT = Integer.parseInt(args[1]);
+//				ServidorThread st = new ServidorThread(PORT);
+//			    switch (args[0]) {
+//			        case "-t":  ServidorThread st = new ServidorThread(PORT);
+//			                    break;
+//			        default:    System.out.println("Main -t|-s puerto\n");
+//			    }
+//		    } else {
+//		        System.out.println("Main -t|-s puerto\n");
+//		    }
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NumberFormatException e2) {
