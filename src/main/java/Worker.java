@@ -38,15 +38,13 @@ public class Worker implements Runnable {
 
             if (parser.failed()) { // (--> NOTAR PRIORIDAD ENTRE ERRORES!!)
                 // BAD REQUEST
-                salida = GestionRespuesta.mensajeError(1);
+                salida = Response.mensajeError(1);
             } else {
                 if (parser.getMethod().equals("GET")) {
-                    salida = GestionRespuesta.gestionGET(parser.getPath(), home);
-//				} else if (parser.getMethod().equals("POST")) {
-//					salida = GestionRespuesta.gestionPOST(parser.getPath(), parser.getBody(), home);
+                    salida = Response.gestionGET(parser.getPath(), home);
                 } else {
                     // NOT IMPLEMENTED
-                    salida = GestionRespuesta.mensajeError(2);
+                    salida = Response.mensajeError(2);
                 }
             }
 
