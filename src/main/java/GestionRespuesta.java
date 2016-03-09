@@ -1,7 +1,3 @@
-
-
-package p1;
-
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -50,51 +46,51 @@ public final class GestionRespuesta {
 	 *
 	 *
 	 */
-	public static String gestionPOST(String ruta, 
-							ByteBuffer body, String home) {
-		String salida = new String(body.array());
-		
-		if (ruta.equals("/")) {	/*Ruta correcta */
-			
-			/*
-			 * Se trata el cuerpo del mensaje
-			 */
-			try {
-				salida = URLDecoder.decode(salida, "UTF-8");
-			} catch (Exception e) {}
-			/*
-			 * Se comprueba la estructura y se analiza
-			 */
-			String[] partes = salida.split("[&=]",4);
-			
-			if (partes[0].equals("fname") &&
-					partes[2].equals("content") &&
-					partes[1].indexOf('/') == -1 &&
-					!partes[1].substring(0,2).equals("src/main")) {
-				/*Formato correcto*/
-				
-				File fichero = new File(home+"/"+partes[1]);
-				
-				try {
-					fichero.createNewFile();
-				} catch (Exception e) {}
-				
-				if (escribeFichero(fichero, partes[3])) {
-					
-					salida = salidaFicheroEscrito(fichero);
-					
-				} else {
-					salida = mensajeError(3); /*Forbidden */
-				}
-			} else {	
-				salida = mensajeError(1); /*Bad request */
-			}
-		} else {
-			salida = mensajeError(3);	/*Forbidden */
-		}
-		
-		return salida;
-	}
+//	public static String gestionPOST(String ruta,
+//							ByteBuffer body, String home) {
+//		String salida = new String(body.array());
+//
+//		if (ruta.equals("/")) {	/*Ruta correcta */
+//
+//			/*
+//			 * Se trata el cuerpo del mensaje
+//			 */
+//			try {
+//				salida = URLDecoder.decode(salida, "UTF-8");
+//			} catch (Exception e) {}
+//			/*
+//			 * Se comprueba la estructura y se analiza
+//			 */
+//			String[] partes = salida.split("[&=]",4);
+//
+//			if (partes[0].equals("fname") &&
+//					partes[2].equals("content") &&
+//					partes[1].indexOf('/') == -1 &&
+//					!partes[1].substring(0,2).equals("src/main")) {
+//				/*Formato correcto*/
+//
+//				File fichero = new File(home+"/"+partes[1]);
+//
+//				try {
+//					fichero.createNewFile();
+//				} catch (Exception e) {}
+//
+//				if (escribeFichero(fichero, partes[3])) {
+//
+//					salida = salidaFicheroEscrito(fichero);
+//
+//				} else {
+//					salida = mensajeError(3); /*Forbidden */
+//				}
+//			} else {
+//				salida = mensajeError(1); /*Bad request */
+//			}
+//		} else {
+//			salida = mensajeError(3);	/*Forbidden */
+//		}
+//
+//		return salida;
+//	}
 	
 	
 	/**
@@ -134,66 +130,66 @@ public final class GestionRespuesta {
 	 * https://docs.oracle.com/javase/tutorial/essential/io/file.html
 	 *
 	 */
-	public static String salidaFicheroEscrito(File fichero) {
-		
-		String salida = "HTTP/1.1 200 OK\n";	/*Cabecera*/
-		
-		try {
-			/* tipo */
-			String tipo = Files.probeContentType(fichero.toPath());
-			salida += "Content-Type: "+tipo+"\n";
-		
-			/* longitud */
-			long longitud = fichero.length() + 149 + fichero.getName().length();
-			salida += "Content-Length: "+longitud+"\n\n";
-				
-			/* contenido */
-			salida += "<html>\n";
-			salida += "<head>\n";
-			salida += "<title>!Exito!</title>\n";
-			salida += "</head>\n";
-			salida += "<body>\n";
-			salida += "<h1>!Exito!</h1>\n";
-			salida += "<p>Se ha escrito lo siguiente en el fichero ";
-			salida += fichero.getName()+":</p>\n";
-			salida += "<pre>\n";
-			
-			/* contenido del fichero */
-			BufferedReader reader = Files.newBufferedReader(fichero.toPath(),
-											Charset.forName("UTF-8"));
-			String linea = null;
-			while ((linea = reader.readLine()) != null) {
-				salida += linea+"\n";
-			}
-			salida += "</pre>\n";
-			salida += "</body>\n";
-			salida += "</html>";
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return salida;
-	}
+//	public static String salidaFicheroEscrito(File fichero) {
+//
+//		String salida = "HTTP/1.1 200 OK\n";	/*Cabecera*/
+//
+//		try {
+//			/* tipo */
+//			String tipo = Files.probeContentType(fichero.toPath());
+//			salida += "Content-Type: "+tipo+"\n";
+//
+//			/* longitud */
+//			long longitud = fichero.length() + 149 + fichero.getName().length();
+//			salida += "Content-Length: "+longitud+"\n\n";
+//
+//			/* contenido */
+//			salida += "<html>\n";
+//			salida += "<head>\n";
+//			salida += "<title>!Exito!</title>\n";
+//			salida += "</head>\n";
+//			salida += "<body>\n";
+//			salida += "<h1>!Exito!</h1>\n";
+//			salida += "<p>Se ha escrito lo siguiente en el fichero ";
+//			salida += fichero.getName()+":</p>\n";
+//			salida += "<pre>\n";
+//
+//			/* contenido del fichero */
+//			BufferedReader reader = Files.newBufferedReader(fichero.toPath(),
+//											Charset.forName("UTF-8"));
+//			String linea = null;
+//			while ((linea = reader.readLine()) != null) {
+//				salida += linea+"\n";
+//			}
+//			salida += "</pre>\n";
+//			salida += "</body>\n";
+//			salida += "</html>";
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return salida;
+//	}
 	
 	 /**
 	  * CODIGO BASADO EN EL PROPUESTO EN:
 	  * https://docs.oracle.com/javase/tutorial/essential/io/file.html
 	  *
 	  */
-	public static boolean escribeFichero(File fichero, String contenido) {
-		try {
-			BufferedWriter writer = Files.newBufferedWriter(fichero.toPath(),
-					Charset.forName("UTF-8"),
-					StandardOpenOption.valueOf("APPEND"));
-			writer.write(contenido, 0, contenido.length());
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+//	public static boolean escribeFichero(File fichero, String contenido) {
+//		try {
+//			BufferedWriter writer = Files.newBufferedWriter(fichero.toPath(),
+//					Charset.forName("UTF-8"),
+//					StandardOpenOption.valueOf("APPEND"));
+//			writer.write(contenido, 0, contenido.length());
+//			writer.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//		return true;
+//	}
 	
 	/**
 	 * Devuelve un mensaje de error, según el tipo solicitado

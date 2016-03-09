@@ -1,6 +1,3 @@
-
-package p1;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -48,8 +45,8 @@ public class Proceso implements Runnable {
 			} else {
 				if (parser.getMethod().equals("GET")) {
 					salida = GestionRespuesta.gestionGET(parser.getPath(), home);
-				} else if (parser.getMethod().equals("POST")) {
-					salida = GestionRespuesta.gestionPOST(parser.getPath(), parser.getBody(), home);
+//				} else if (parser.getMethod().equals("POST")) {
+//					salida = GestionRespuesta.gestionPOST(parser.getPath(), parser.getBody(), home);
 				} else {
 					// NOT IMPLEMENTED
 					salida = GestionRespuesta.mensajeError(2);

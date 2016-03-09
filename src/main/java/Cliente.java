@@ -1,6 +1,3 @@
-
-package p1;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.io.PrintWriter;
@@ -8,32 +5,32 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Cliente {
-	
+
 	// constantes
 	static int REINTENTO = 2000; // milisegundos hasta volver a intentar la conexión si el servidor está saturado
 	static int INTENTOS = 3; // total de intentos de negociación no fallidos, sin contar el inicial
-	
+
 	// VARIABLES PARA LOS PARÁMETROS DE ENTRADA
 	static int id; // id del cliente
 	static String SERVER_ADDRESS; // dirección del servidor
 	static int SERVER_PORT; // puerto del servidor
-	
+
 	// socket para comunicarse con el servidor empresa
 	static Socket socketAlServidor = null;
-	
+
 	/*
 	* Proceso cliente
-	* 
+	*
 	* @param[in] 1		identificador del cliente
 	* @param[in] 2		puerto del servidor
 	* @param[in] 3		dirección del servidor
 	*/
 	public static void main(String[] args) {
-		
+
 		// valores por defecto
 		SERVER_PORT = 8080;
 		SERVER_ADDRESS = "localhost";
-		
+
 		switch (args.length) {
 			case 3 :	SERVER_ADDRESS = args[2];
 			case 2 :	SERVER_PORT = Integer.parseInt(args[1]);
@@ -42,11 +39,11 @@ public class Cliente {
 			default :	SERVER_PORT = 8080;
 						SERVER_ADDRESS = "localhost";
 		}
-		
+
 		// Protocolo de comunicación con el Main.
 		try{
 			for (int i = 1; i < 10; i++) {
-				
+
 				// estableciendo conexión con el servidor empresa
 				boolean exito; //¿conectado?
 				exito = conectarServidor(10); //10 intentos
@@ -55,7 +52,7 @@ public class Cliente {
 					System.err.println("Don't know about host:"+SERVER_ADDRESS);
 					System.exit(1); //abortar si hay problemas
 				}
-		
+
 				// Ya hay conexíón
 				// Inicialización de los flujos de datos del socket
 				// para la comunicación con el servidor
@@ -73,21 +70,21 @@ public class Cliente {
 					System.err.println("I/O problem:" + SERVER_ADDRESS);
 					System.exit(1);
 				}
-			
+
 				// para guardar los valores recibidos en la comunicación con la empresa
 				String respuesta = ""; // la respuesta recibida
 				String peticion = ""; // la petición enviada
-				
+
 				// generamos petición
 				peticion = generaPeticion(i);
-			
+
 				// mostramos petición
 				System.out.println("--> PETICION\n");
 				System.out.println(peticion);
-			
+
 				// realizamos petición
 				canalSalidaAlServidor.println(peticion);
-			
+
 				try {
 					// recibimos respuesta
 					String linea = null;
@@ -98,14 +95,14 @@ public class Cliente {
 					// DE MOMENTO IGNORAMOS ESTE RERROR!!!!!!!!!
 					// System.err.println("\n--> SOCKET MAL CERRADO\n");
 				}
-			
+
 				// mostramos respuesta
 				System.out.println("--> RESPUESTA\n");
 				System.out.println(respuesta);
-				
+
 				// Al cerrar cualquiera de los canales de
-				// comunicación usados por un socket, el socket 
-				// se cierra. Como no nos importa perder información 
+				// comunicación usados por un socket, el socket
+				// se cierra. Como no nos importa perder información
 				// cerramos el canal de entrada.
 				canalEntradaDelServidor.close();
 
@@ -123,7 +120,7 @@ public class Cliente {
 		//darle tiempo al servidor a arrancar
 		boolean exito = false; //¿hay servidor?
 		int van = 0;
-		
+
 		while((van<maxIntentos) && !exito){
 			try {
 				socketAlServidor = new Socket(SERVER_ADDRESS, SERVER_PORT);
@@ -140,11 +137,11 @@ public class Cliente {
 		}
 		return exito;
 	}
-	
+
 	static private String generaPeticion(int tipo) {
-		
+
 		String salida = "";
-		
+
 		switch (tipo) {
 			case 1:	// BAD REQUEST
 					salida = "Me lo invento...\n";
@@ -182,8 +179,8 @@ public class Cliente {
 			default:salida = "¡¡ESTO NO DEBE PASAR!!";
 					break;
 		}
-		
+
 		return salida;
-		
+
 	}
 }

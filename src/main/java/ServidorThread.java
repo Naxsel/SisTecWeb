@@ -1,7 +1,3 @@
-
-
-package p1;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
@@ -24,9 +20,10 @@ public class ServidorThread {
 		/* inicializamos las variables */
 		
 		ruta = ""; /* por defecto */
-		
+
 		try {
 			ruta = new File("").getCanonicalPath();
+			System.out.println(ruta);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

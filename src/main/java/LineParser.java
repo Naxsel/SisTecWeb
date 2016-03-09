@@ -1,5 +1,3 @@
-package p1;
-
 import java.nio.ByteBuffer;
 
 public class LineParser {
