@@ -63,7 +63,7 @@ public final class Response {
             case 1:	/* Bad request */
                 cabeza = "HTTP/1.1 400 Bad Request\n";
                 cabeza += "Content-Type: text/html\n";
-                cabeza += "Content-Length: 97\n\n";
+                cabeza += "Content-Length: 96\n\n";
                 cuerpo = "<html>\n";
                 cuerpo += "<head>\n";
                 cuerpo += "<title>400 Bad Request</title>\n";
@@ -77,7 +77,7 @@ public final class Response {
             case 2: /* Not implemented */
                 cabeza = "HTTP/1.1 501 Not Implemented\n";
                 cabeza += "Content-Type: text/html\n";
-                cabeza += "Content-Length: 105\n\n";
+                cabeza += "Content-Length: 104\n\n";
                 cuerpo = "<html>\n";
                 cuerpo += "<head>\n";
                 cuerpo += "<title>501 Not Implemented</title>\n";
@@ -91,7 +91,7 @@ public final class Response {
             case 3: /* Forbidden */
                 cabeza = "HTTP/1.1 403 Forbidden\n";
                 cabeza += "Content-Type: text/html\n";
-                cabeza += "Content-Length: 93\n\n";
+                cabeza += "Content-Length: 92\n\n";
                 cuerpo = "<html>\n";
                 cuerpo += "<head>\n";
                 cuerpo += "<title>403 Forbidden</title>\n";
@@ -105,7 +105,7 @@ public final class Response {
             case 4: /* Not found */
                 cabeza = "HTTP/1.1 404 Not Found\n";
                 cabeza += "Content-Type: text/html\n";
-                cabeza += "Content-Length: 93\n\n";
+                cabeza += "Content-Length: 92\n\n";
                 cuerpo = "<html>\n";
                 cuerpo += "<head>\n";
                 cuerpo += "<title>404 Not Found</title>\n";
