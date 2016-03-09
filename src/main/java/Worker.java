@@ -1,6 +1,12 @@
+import sun.misc.IOUtils;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
+/**
+ * Clase Thread que atiende una peticion al servidor
+ */
 public class Worker implements Runnable {
 
     Socket clientSocket; // el socket asignado
@@ -22,19 +28,18 @@ public class Worker implements Runnable {
     public void run() {
 
         try {
-            // Instanciar PrintWriter y asociarle el OutputStream
-            PrintWriter salHaciaCliente = new PrintWriter(
-                    clientSocket.getOutputStream(),
-                    true
-            );
+            // Entrada y Salida
+            OutputStream salHaciaCliente = clientSocket.getOutputStream();
+            InputStream peticion = clientSocket.getInputStream();
 
             // Instanciar BlockingHTTPParser y asociarle el InputStream
             BlockingHTTPParser parser = new BlockingHTTPParser();
-            parser.parseRequest(clientSocket.getInputStream());
+            parser.parseRequest(peticion);
+
 
             while (!(parser.isComplete() || parser.failed())) {}
 
-            String salida = "";
+            byte [] salida;
 
             if (parser.failed()) { // (--> NOTAR PRIORIDAD ENTRE ERRORES!!)
                 // BAD REQUEST
@@ -49,7 +54,7 @@ public class Worker implements Runnable {
             }
 
             // Enviar la respuesta al cliente
-            salHaciaCliente.println(salida);
+            salHaciaCliente.write(salida);
 
             // Al cerrar cualquier canal de comunicación
             // usado por un socket, el socket se cierra.
@@ -61,4 +66,5 @@ public class Worker implements Runnable {
             e.printStackTrace();
         }
     }
+
 }

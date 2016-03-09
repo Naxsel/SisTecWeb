@@ -6,18 +6,23 @@ public final class Response {
 
     private Response() {}
 
-    public static String gestionGET(String ruta, String home) {
-        String salida = "";
+    /**
+     * Metodo que prepara la respuesta del servidor, trantando el mensaje sea correcto o de error
+     * Se trabaja de forma que los clientes no pueden acceder ni conocer directorios raiz.
+     * @param ruta
+     * @param home
+     * @return
+     */
+    public static byte [] gestionGET(String ruta, String home) {
+        byte [] salida;
 
 		/* No aceptaria esto: "/./estoy_en_el_directorio_correcto.txt"
 		 * Ruta correcta
 		 */
 
         System.out.println(ruta);
-        if (ruta.lastIndexOf('/') == 0) {
-
+        if ( !ruta.contains("./") && !ruta.contains("../") ) {
             File fichero = new File(home+ruta);
-
             if (fichero.isFile()) {		/*Existe y es una fichero */
 
                 if (fichero.canRead()) { /*Existe y se puede leer */
@@ -36,30 +41,48 @@ public final class Response {
     }
 
     /**
-     * CODIGO BASADO EN EL PROPUESTO EN:
-     * https://docs.oracle.com/javase/tutorial/essential/io/file.html
      *
+     * @param fichero
+     * @return
      */
-    public static String salidaFichero(File fichero) {
+    public static byte [] salidaFichero(File fichero) {
 
-        String salida = "HTTP/1.1 200 OK\n"; 	/*Cabecera */
+        String msg = "HTTP/1.1 200 OK\n"; 	/*Cabecera */
+        byte [] salida = new byte[0];
+        byte [] cabecera;
+        byte [] datos;
+
 
         try {
 			/* tipo */
+
             String tipo = Files.probeContentType(fichero.toPath());
-            salida += "Content-Type: "+tipo+"\n";
+
+
+            msg += "Content-Type: "+tipo+"\n";
+            System.out.println(msg);
 
 			/* Longitud */
             long longitud = fichero.length();
-            salida += "Content-Length: "+longitud+"\n\n";
+            msg += "Content-Length: "+longitud+"\n\n";
 
 			/* Contenido */
-            BufferedReader reader = Files.newBufferedReader(fichero.toPath(),
-                    Charset.forName("UTF-8"));
-            String linea = null;
-            while ((linea = reader.readLine()) != null) {
-                salida += linea+"\n";
-            }
+            cabecera = msg.getBytes();
+            datos = Files.readAllBytes(fichero.toPath());
+            salida = new byte [cabecera.length + datos.length];
+            System.arraycopy(cabecera, 0, salida, 0 , cabecera.length);
+            System.arraycopy(datos, 0, salida, cabecera.length , datos.length);
+
+//            if (salida.contains("image/")){
+//
+//            }else{
+//                BufferedReader reader = Files.newBufferedReader(fichero.toPath(),
+//                        Charset.forName("UTF-8"));
+//                String linea = null;
+//                while ((linea = reader.readLine()) != null) {
+//                    salida += linea+"\n";
+//                }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +96,7 @@ public final class Response {
      * @param[in]    tipo    tipo de mensaje de error
      * @return               String con el mensaje de error
      */
-    public static String mensajeError(int tipo) {
+    public static byte [] mensajeError(int tipo) {
 
         String salida = "";
 
@@ -139,7 +162,7 @@ public final class Response {
                 break;
         }
 
-        return salida;
+        return salida.getBytes();
 
     }
 }

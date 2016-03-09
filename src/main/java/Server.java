@@ -30,8 +30,11 @@ public class Server {
             }
 
             serverSocket = creaListenSocket(PORT);
-            System.out.printf("Servidor escuchando en %d, sirviendo desde %s",PORT,folder);
+            System.out.printf("Servidor escuchando en %d, sirviendo desde %s\n",PORT,folder);
 
+            /* Para optimizar el sistema correctamente, habría que limitar el número de threads que puede existir
+             * de forma simultanea.
+             */
             while (true) {
                 clientSocket = creaClientSocket(serverSocket);
                 p = new Worker(clientSocket,PORT,folder);
