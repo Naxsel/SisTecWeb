@@ -1,10 +1,19 @@
+DROP TABLE notes;
 DROP TABLE users;
 
 CREATE TABLE users (
-  user varchar(255) default NULL,
+  user varchar(255) NULL,
   pass varchar(255),
   PRIMARY KEY (user)
 );
+
+CREATE TABLE notes (
+  id mediumint(8) unsigned NOT NULL auto_increment,
+  fecha varchar(255) DEFAULT "0/0/0",
+  texto TEXT DEFAULT "SOME TEXT HERE",
+
+  PRIMARY KEY (id)
+) AUTO_INCREMENT=1;
 
 INSERT INTO users (user,pass) VALUES ("Martina Briggs","XPN71XWV6VW"),("Yoshio Dixon","SLR09KEO2ZJ"),("Dahlia Cooper","IHB98RMZ6YX"),("Reed Gilmore","WTV96DIA9IJ"),("Brynne Merrill","XDZ47PQJ1ZS"),("Bernard Nolan","GQM75WRY3YX"),("Blaze Odom","SYU59OLC4VW"),("Cameron Mccullough","LHR36PEV8UH"),("Kimberley Buck","UEU17DPZ8ZI"),("Natalie Pope","ZJY77YHL1PH");
 INSERT INTO users (user,pass) VALUES ("Sierra Castillo","IUO48VQQ1FX"),("Odette Holt","WRP26IKB3TP"),("Yen Cotton","JBA48KUF8IJ"),("Rhiannon Scott","NJK39JPV2MT"),("Clio Mooney","URF40EAI1KW"),("Colt William","USX82JML9VV"),("Hayley Travis","BWO69GNH7KR"),("Wilma Sears","XXI78IPQ0KE"),("Mona Hansen","MWE42OAL7PA"),("Blaze Chandler","KYU95VXY3DB");
