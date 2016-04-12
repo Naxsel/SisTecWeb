@@ -46,6 +46,8 @@ module.exports = {
 
     },
 
+    
+
     FindByUser: function(user, callback){
 
     },

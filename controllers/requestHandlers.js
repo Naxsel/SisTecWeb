@@ -1,6 +1,7 @@
 var querystring = require("querystring"),
     fs = require("fs"),
     formidable = require("formidable");
+
 function start(response) {
     console.log("Request handler 'start' was called.");
     var body = '<html>'+
@@ -20,6 +21,7 @@ function start(response) {
     response.write(body);
     response.end();
 }
+
 function upload(response, request) {
     console.log("Request handler 'upload' was called.");
     var form = new formidable.IncomingForm();
@@ -40,11 +42,36 @@ function upload(response, request) {
         response.end();
     });
 }
+
 function show(response) {
     console.log("Request handler 'show' was called.");
     response.writeHead(200, {"Content-Type": "image/png"});
     fs.createReadStream("/tmp/test.png").pipe(response);
 }
-exports.start = start;
-exports.upload = upload;
+
+function setMemo(response, request) {
+
+}
+
+function deleteMemo(response, request) {
+
+}
+
+function showMemo(response, request){
+
+}
+
+function login (response, request){
+
+}
+
+function register (response, request ){
+    
+}
+
 exports.show = show;
+exports.setMemo = setMemo;
+exports.deleteMemo = deleteMemo;
+exports.showMemo = showMemo;
+exports.login = login;
+exports.register = register;
