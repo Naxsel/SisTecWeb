@@ -12,6 +12,9 @@ module.exports = {
 
     /**     Test        */
 
+    /*
+     * Funcion de testing para la base de datos
+     */
     try: function (){
         connection.query("SELECT id FROM notes", function (err, res) {
             if (err) throw err;
@@ -25,7 +28,7 @@ module.exports = {
      * Añade una nueva nota
      */
     addNote: function (note,callback){
-        connection.query("INSERT into notas (fecha,texto,path) VALUES ('"+note.fecha+"','"+note.texto+"','"+note.ruta+"')" , function (err,res){
+        connection.query("INSERT into notas (fecha,texto,file) VALUES ('"+note.fecha+"','"+note.texto+"','"+note.fichero+"')" , function (err,res){
             if(err) throw err;
             callback(res);
         });

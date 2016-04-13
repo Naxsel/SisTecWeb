@@ -4,8 +4,8 @@ DROP TABLE IF EXISTS stw3.notes;
 
 CREATE TABLE stw3.notes (
   id MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  fecha varchar(255) DEFAULT "0/0/0",
-  texto TEXT DEFAULT "SOME TEXT HERE",
-  path VARCHAR(255),
+  fecha varchar(255),
+  texto TEXT,
+  fichero varchar(255),
   PRIMARY KEY (id)
 ) AUTO_INCREMENT=1;
