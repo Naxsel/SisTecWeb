@@ -9,3 +9,6 @@ CREATE TABLE stw3.notes (
   fichero varchar(255),
   PRIMARY KEY (id)
 ) AUTO_INCREMENT=1;
+
+
+INSERT INTO stw3.notes (fecha,texto,fichero) VALUES ("01/01/1111","Texto","nodejs-light.png");

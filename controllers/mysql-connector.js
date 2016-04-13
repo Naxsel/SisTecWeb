@@ -11,7 +11,6 @@ connection.connect();
 module.exports = {
 
     /**     Test        */
-
     /*
      * Funcion de testing para la base de datos
      */
@@ -28,7 +27,7 @@ module.exports = {
      * Añade una nueva nota
      */
     addNote: function (note,callback){
-        connection.query("INSERT into notas (fecha,texto,file) VALUES ('"+note.fecha+"','"+note.texto+"','"+note.fichero+"')" , function (err,res){
+        connection.query("INSERT into notas (fecha,texto,fichero) VALUES ('"+note.fecha+"','"+note.texto+"','"+note.fichero+"')" , function (err,res){
             if(err) throw err;
             callback(res);
         });
@@ -59,6 +58,9 @@ module.exports = {
      * Elimina una nota, dado un id
      */
     DeleteByID: function(id, callback){
+
+        var note = connection.query("SELECT fichero FROM notes WHERE id ='"+id+"'");
+        console.log(note);
         connection.query("DELETE FROM notes WHERE id ='"+id+"'", function(err,res){
             if(err) throw err;
             callback(res);
