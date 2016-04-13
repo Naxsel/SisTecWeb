@@ -26,8 +26,8 @@ module.exports = {
     /*
      * Añade una nueva nota
      */
-    addNote: function (note,callback){
-        connection.query("INSERT into notas (fecha,texto,fichero) VALUES ('"+note.fecha+"','"+note.texto+"','"+note.fichero+"')" , function (err,res){
+    addNote: function (fecha,texto,fichero,callback){
+        connection.query("INSERT into notas (fecha,texto,fichero) VALUES ('"+fecha+"','"+texto+"','"+fichero+"')" , function (err,res){
             if(err) throw err;
             callback(res);
         });

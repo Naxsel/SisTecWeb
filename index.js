@@ -8,6 +8,4 @@ handle["/setMemo"] = requestHandlers.setMemo;
 handle["/deleteMemo"] = requestHandlers.deleteMemo;
 handle["/showAllMemo"] = requestHandlers.show;
 handle["/showMemo"] = requestHandlers.showMemo;
-handle["/login"] = requestHandlers.login;
-handle["/register"] = requestHandlers.register;
 server.start(router.route, handle);

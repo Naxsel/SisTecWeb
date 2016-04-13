@@ -10,12 +10,13 @@ function show(response) {
     console.log("Request handler 'show' was called.");
     var aux = tabla;
     mysql.FindAll(function(res){
-        for (var n = 0; n<res.lenght;n++){
+        console.log(res);
+        for (var n = 0; n<res.length;n++){
             aux +='<tr><td><a class="btn btn-default" href="showMemo?id='+res[n].id+'">' +
                 '<span class="glyphicon glyphicon-search"></span></a></td>'+
-                '<td>"+res[n].fecha+"</td>'+
-                '<td>"+res[n].hora+"</td>';
-            if (res[n].fichero.equals("null")){
+                '<td>"'+res[n].fecha+'"</td>'+
+                '<td>"'+res[n].texto+'"</td>';
+            if (res[n].fichero=="null"){
                 aux += '<td> No adjunto </td>';
             }else{
                 aux += '<td><a href="'+PATH+res[n].fichero+'">'+res[n].fichero+'</a></td>';
@@ -23,6 +24,7 @@ function show(response) {
             aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n].id+'">' +
                 '<span class="glyphicon glyphicon-trash"></span></td>';
         }
+        console.log(aux);
         aux+=form;
         response.writeHead(200, {"Content-Type": "text/html"});
         response.write(aux);
@@ -32,6 +34,11 @@ function show(response) {
 
 function setMemo(response, request) {
     console.log("Request handler 'setMemo' was called.");
+    var load = new formidable.IncomingForm();
+    load.parse(req, function(err,fields,files){
+       
+    });
+    return;
     var aux = tabla;
 
 }
@@ -50,10 +57,6 @@ exports.show = show;
 exports.setMemo = setMemo;
 exports.deleteMemo = deleteMemo;
 exports.showMemo = showMemo;
-exports.login = login;
-exports.register = register;
-
-
 
 var tabla  = '<!DOCTYPE html><html lang="en"><head><title>Gestor Tareas</title>'+
     '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
@@ -66,13 +69,16 @@ var tabla  = '<!DOCTYPE html><html lang="en"><head><title>Gestor Tareas</title>'
     '<a class = "btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></td></tr>';
 
 
-var form = '</tbody></table></br><h4>Añade una tarea</h4>' +
-    '<form action="/setMemo" method="post" enctype="multipart/form-data"' +
-    '<input type="date" required placeholder="DD/MM/YYYY" name="fecha" pattern="\\d{1,2}-\\d{1,2}-\\{4}">' +
-    '<input type="text" required placeholder="Info" name="texto">' +
-    '<input type="file" name="fichero" multiple="multiple">' +
-    '<input type="submit" value="Subir Fichero" ></form>' +
-    '</body></html>';
+var form = '</tbody></table></br></br><h4>Añade una tarea</h4>' +
+    '<form class="form-horizontal" role="form"><div class="form-group">'+
+    '<label class="control-label col-sm-2" for="email">Fecha:</label><div class="col-sm-10">'+
+    '<input type="fecha" class="form-control" id="fecha" placeholder="DD/MM/YYYY"></div></div>'+
+    '<div class="form-group"><label class="control-label col-sm-2" for="pwd">Texto:</label>'+
+    '<div class="col-sm-10"><input type="text" class="form-control" id="text" placeholder="Info"></div></div>' +
+    '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">'+
+    '<input type="file" class="form-control-life" name="fichero"></div></div><div class="form-group">'+
+    '<div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-default">Submit</button>'+
+    '</div></div></form></body></html>';
 
 
 
