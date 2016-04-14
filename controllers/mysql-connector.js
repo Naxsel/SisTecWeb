@@ -60,12 +60,17 @@ module.exports = {
     DeleteByID: function(id, callback){
 
         var note = connection.query("SELECT fichero FROM notes WHERE id ='"+id+"'");
-        console.log(note);
         connection.query("DELETE FROM notes WHERE id ='"+id+"'", function(err,res){
             if(err) throw err;
             callback(res);
         });
     },
 
+    isUsed: function(fichero,callback){
+        connection.query("COUNT FROM notes WHERE fichero='"+fichero+"'",function(err,res){
+            if(err) throw err;
+            callback(res);
+        });
+    },
 
 }

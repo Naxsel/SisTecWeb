@@ -35,23 +35,22 @@ function setMemo(response, request) {
     console.log("Request handler 'setMemo' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,fields,files){
-        console.log(fields);
-        console.log(files);
+        console.log(files.fichero);
         if(files.fichero.name != ''){
            fs.rename(files.fichero.path,PATH+files.fichero.name, function(err){
                if(err){
                    console.log("Error");
                }else{
-                   mysql.addNote(fields.fecha,fields.texto,fields.fichero.name, function(res){
-                       console.log("aqui llega");
+                   mysql.addNote(fields.fecha,fields.texto,files.fichero.name, function(res){
+                       console.log();
                    });
                }
 
            });
         }else{
             mysql.addNote(fields.fecha, fields.texto, "null", function(res){
-                console.log("aqui")
-            });
+                console.log();
+            }); 
         }
     });
     response.writeHead(302, {'Location': '/'});
@@ -60,6 +59,19 @@ function setMemo(response, request) {
 
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
+    var params = url.parse(request.url,true);
+    mysql.DeleteByID(params.query.id,function(res){
+        console.log(params.query);
+        if (params.query.fichero != "null"){
+            if (mysql.isUsed == 0) {
+                fs.unlink(PATH+params.query.fichero, function (err) {
+                    if (err) console.log("Error al eliminar fichero");
+                });
+            }
+        }
+    });
+    response.writeHead(302, {'Location': '/'});
+    response.end();
 
 }
 
@@ -67,9 +79,7 @@ function showMemo(response, request){
     console.log("Request handler 'showMemo' was called.");
     var aux = memo;
     var params = url.parse(request.url,true);
-    console.log(params);
     mysql.FindByID(params.query.id,function(res){
-        console.log(res);
         aux +='<tr><td><a class="btn btn-default" href="showMemo?id='+res[0].id+'">' +
             '<span class="glyphicon glyphicon-search"></span></a></td>'+
             '<td>"'+res[0].fecha+'"</td>'+
