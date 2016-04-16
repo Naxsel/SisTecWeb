@@ -5,7 +5,7 @@ var querystring = require("querystring"),
     mysql = require("./mysql-connector");
 
 
-var PATH = "./ficheros/"
+var PATH = "ficheros/";
 
 function show(response) {
     console.log("Request handler 'show' was called.");
@@ -19,7 +19,6 @@ function show(response) {
             if (res[n].fichero=="null"){
                 aux += '<td> No adjunto </td>';
             }else{
-                console.log(PATH+res[n].fichero);
                 aux += '<td><a href="'+PATH+res[n].fichero+'">'+res[n].fichero+'</a></td>';
             }
             aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n].id+"&fichero="+res[n].fichero+'">' +
@@ -90,7 +89,6 @@ function showMemo(response, request){
         if (res[0].fichero=="null"){
             aux += '<td> No adjunto </td>';
         }else{
-            console.log(PATH+res[0].fichero);
             aux += '<td><a href="'+PATH+res[0].fichero+'">'+res[0].fichero+'</a></td>';
         }
         aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0].id+'">' +
