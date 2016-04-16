@@ -67,7 +67,7 @@ module.exports = {
     },
 
     isUsed: function(fichero,callback){
-        connection.query("COUNT FROM notes WHERE fichero='"+fichero+"'",function(err,res){
+        connection.query("SELECT COUNT (*) as total FROM notes WHERE fichero='"+fichero+"'",function(err,res){
             if(err) throw err;
             callback(res);
         });

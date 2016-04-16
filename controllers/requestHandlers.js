@@ -5,23 +5,24 @@ var querystring = require("querystring"),
     mysql = require("./mysql-connector");
 
 
-var PATH = "ficheros/"
+var PATH = "./ficheros/"
 
 function show(response) {
     console.log("Request handler 'show' was called.");
     var aux = tabla;
     mysql.FindAll(function(res){
         for (var n = 0; n<res.length;n++){
-            aux +='<tr><td><a class="btn btn-default" href="showMemo?id='+res[n].id+'">' +
-                '<span class="glyphicon glyphicon-search"></span></a></td>'+
+            aux +='<tr><td><a href="showMemo?id='+res[n].id+'" class="btn btn-xs btn-info">' +
+                '<span class="glyphicon glyphicon-tag"></span></a></td>'+
                 '<td>"'+res[n].fecha+'"</td>'+
                 '<td>"'+res[n].texto+'"</td>';
             if (res[n].fichero=="null"){
                 aux += '<td> No adjunto </td>';
             }else{
+                console.log(PATH+res[n].fichero);
                 aux += '<td><a href="'+PATH+res[n].fichero+'">'+res[n].fichero+'</a></td>';
             }
-            aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n].id+'">' +
+            aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n].id+"&fichero="+res[n].fichero+'">' +
                 '<span class="glyphicon glyphicon-trash"></span></td>';
         }
         aux+=form;
@@ -35,7 +36,6 @@ function setMemo(response, request) {
     console.log("Request handler 'setMemo' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,fields,files){
-        console.log(files.fichero);
         if(files.fichero.name != ''){
            fs.rename(files.fichero.path,PATH+files.fichero.name, function(err){
                if(err){
@@ -52,26 +52,29 @@ function setMemo(response, request) {
                 console.log();
             }); 
         }
+        response.writeHead(302, {'Location': '/'});
+        response.end();
     });
-    response.writeHead(302, {'Location': '/'});
-    response.end();
+
 }
 
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
     mysql.DeleteByID(params.query.id,function(res){
-        console.log(params.query);
         if (params.query.fichero != "null"){
-            if (mysql.isUsed == 0) {
-                fs.unlink(PATH+params.query.fichero, function (err) {
-                    if (err) console.log("Error al eliminar fichero");
-                });
-            }
+            mysql.isUsed(params.query.fichero,function(res) {
+                if (res[0].total == 0) {
+                    fs.unlink(PATH + params.query.fichero, function (err) {
+                        if (err) console.log("Error al eliminar fichero");
+                    });
+                }
+            });
         }
+        response.writeHead(302, {'Location': '/'});
+        response.end(); 
     });
-    response.writeHead(302, {'Location': '/'});
-    response.end();
+
 
 }
 
@@ -87,6 +90,7 @@ function showMemo(response, request){
         if (res[0].fichero=="null"){
             aux += '<td> No adjunto </td>';
         }else{
+            console.log(PATH+res[0].fichero);
             aux += '<td><a href="'+PATH+res[0].fichero+'">'+res[0].fichero+'</a></td>';
         }
         aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0].id+'">' +
