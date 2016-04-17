@@ -1,3 +1,12 @@
+/**
+ * Autor: Alejandro Solanas Bonilla
+ * NIA: 647647
+ * Fichero: server.js
+ * Fecha: 17/4/2016
+ * Funcion: Funciones y Endpoints del sistema
+ */
+
+
 var querystring = require("querystring"),
     fs = require("fs"),
     formidable = require("formidable"),
@@ -7,6 +16,12 @@ var querystring = require("querystring"),
 
 var PATH = "ficheros/";
 
+
+/**
+ * Muestra la lista de todos los elementos disponibles. Es la página princial
+ * Ademas incluye un formulario para añadir nuevas tareas.
+ * @param response
+ */
 function show(response) {
     console.log("Request handler 'show' was called.");
     var aux = tabla;
@@ -31,21 +46,27 @@ function show(response) {
     });
 }
 
+/**
+ * Procedimiento para añadir una nueva tarea al sistema
+ * @param response
+ * @param request
+ */
 function setMemo(response, request) {
     console.log("Request handler 'setMemo' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,fields,files){
         if(files.fichero.name != ''){
-           fs.rename(files.fichero.path,PATH+files.fichero.name, function(err){
-               if(err){
-                   console.log("Error");
-               }else{
-                   mysql.addNote(fields.fecha,fields.texto,files.fichero.name, function(res){
-                       console.log();
-                   });
-               }
+            var nombre = files.fichero.name.replace(/ /g,"_");
+            fs.rename(files.fichero.path,PATH+nombre, function(err){
+                if(err){
+                    console.log("Error");
+                }else{
+                    mysql.addNote(fields.fecha,fields.texto,nombre, function(res){
+                        console.log();
+                    });
+                }
 
-           });
+            });
         }else{
             mysql.addNote(fields.fecha, fields.texto, "null", function(res){
                 console.log();
@@ -57,6 +78,11 @@ function setMemo(response, request) {
 
 }
 
+/**
+ * Elimina un elemento de la lista de tareas
+ * @param response
+ * @param request
+ */
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
@@ -77,6 +103,11 @@ function deleteMemo(response, request) {
 
 }
 
+/**
+ * Muestra una Tarea de forma individual
+ * @param response
+ * @param request
+ */
 function showMemo(response, request){
     console.log("Request handler 'showMemo' was called.");
     var aux = memo;
@@ -108,7 +139,7 @@ exports.showMemo = showMemo;
 
 
 /**
- *  Fragmentos de HTML
+ *  Fragmentos de HTML usados en las funciones.
  */
 var tabla  = '<!DOCTYPE html>' +
     '<html lang="en"><head><title>Gestor Tareas</title>'+

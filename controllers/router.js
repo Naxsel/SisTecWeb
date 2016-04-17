@@ -1,3 +1,11 @@
+/**
+ * Autor: Alejandro Solanas Bonilla
+ * NIA: 647647
+ * Fichero: server.js
+ * Fecha: 17/4/2016
+ * Funcion: Gestiona las peticiones, pasandoselas al handler, sirviendo el fichero, o devolviendo un error
+ */
+
 var fs = require('fs');
 
 function route(handle, pathname, response, request) {
@@ -17,4 +25,4 @@ function route(handle, pathname, response, request) {
         response.end();
     }
 }
-exports.route = route;
+exports.route = route; 

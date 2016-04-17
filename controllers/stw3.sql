@@ -1,3 +1,11 @@
+/**
+* Autor: Alejandro Solanas Bonilla
+* NIA: 647647
+* Fichero: stw3.sql
+* Fecha: 17/4/2016
+* Funcion: Prepara la base de datos para el correcto funcionamiento del programa
+*/
+
 CREATE DATABASE IF NOT EXISTS stw3;
 
 DROP TABLE IF EXISTS stw3.notes;
