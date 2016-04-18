@@ -24,7 +24,7 @@ var PATH = "ficheros/";
  */
 function show(response) {
     console.log("Request handler 'show' was called.");
-    var aux = tabla;
+    var aux = header+tabla;
     mysql.FindAll(function(res){
         for (var n = 0; n<res.length;n++){
             aux +='<tr><td><a href="showMemo?id='+res[n].id+'" class="btn btn-xs btn-info">' +
@@ -110,7 +110,7 @@ function deleteMemo(response, request) {
  */
 function showMemo(response, request){
     console.log("Request handler 'showMemo' was called.");
-    var aux = memo;
+    var aux = header + tabla;
     var params = url.parse(request.url,true);
     mysql.FindByID(params.query.id,function(res){
         aux +='<tr><td><a class="btn btn-default" href="showMemo?id='+res[0].id+'">' +
@@ -141,23 +141,26 @@ exports.showMemo = showMemo;
 /**
  *  Fragmentos de HTML usados en las funciones.
  */
-var tabla  = '<!DOCTYPE html>' +
+
+var header = '<!DOCTYPE html>' +
     '<html lang="en"><head><title>Gestor Tareas</title>'+
     '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
     '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">'+
     '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>'+
-    '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>'+
-    '</head><body><div class="container"><h2>Gestor Tareas</h2><table class="table"><thead>'+
-    '<tr><th>Tarea</th><th>Fecha Limite</th><th>Comentarios</th><th>Fichero</th><th>Eliminar</th></tr></thead><tbody>';
+    '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script></head>';
 
-var memo = '<!DOCTYPE html>' +
-    '<html lang="en"><head><title>Tarea</title>'+
-    '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
-    '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">'+
-    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>'+
-    '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>'+
-    '</head><body><div class="container"><h2>Tarea</h2><table class="table"><thead>'+
-    '<tr><th>Tarea</th><th>Fecha Limite</th><th>Comentarios</th><th>Fichero</th><th>Eliminar</th></tr></thead><tbody>';
+var tabla  = '<body>' +
+    '<div class="container">' +
+    '<h2>Gestor Tareas</h2>' +
+    '<table class="table"><thead>'+
+    '<tr>' +
+        '<th>Tarea</th>' +
+        '<th>Fecha Limite</th>' +
+        '<th>Comentarios</th>' +
+        '<th>Fichero</th>' +
+        '<th>Eliminar</th>' +
+    '</tr></thead>' +
+    '<tbody>';
 
 
 var form = '</tbody></table></br></br><h4>Añade una tarea</h4>' +
