@@ -206,7 +206,7 @@ var form = '</tbody></table></br></br><h4>Añade una tarea</h4>' +
     '   <div class="form-group">' +
     '       <label class="control-label col-sm-1" for="pwd">Texto:</label>'+
     '        <div class="col-sm-10">' +
-    '           <input type="text" class="form-control" name="texto" placeholder="Info" required>' +
+    '           <textarea type="text" class="form-control" rows="3" name="texto" placeholder="Info" required></textarea>' +
     '       </div>' +
     '   </div>' +
     '   <div class="form-group">' +
