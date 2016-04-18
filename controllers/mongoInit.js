@@ -29,14 +29,14 @@ MongoClient.connect(
                     if (err) return next(err);
                     db.createCollection('users', function (err, collection) {
                         var usuario = {'user': 'admin', 'password': 'test1'};
-                        bcrypt.genSalt(SALT_WORK_FACTOR, function(err,res) {
+                        bcrypt.genSalt(SALT_WORK_FACTOR, function(err,salt) {
                             if(err) return next(err);
                             bcrypt.hash(usuario.password, salt, function(err,hash){
                                 if (err) return next(err);
                                 usuario.password = hash;
                                 collection.insert(usuario, function (err, res) {
                                     if (err) console.log(error);
-                                    console.log("Datos creados, usar\n\tuser: admin\n\tpass: test1")
+                                    console.log("Datos creados, disponible usuario\n\tuser: admin\n\tpass: test1")
                                     db.close();
                                 });
                             });
