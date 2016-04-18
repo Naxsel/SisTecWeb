@@ -2,7 +2,7 @@
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
  * Fichero: mongoInit.js
- * Fecha: 17/4/2016
+ * Fecha: 18/4/2016
  * Funcion: Prepara la base de datos para el correcto funcionamiento del programa
  *          Crea las 2 colecciones e inserta unos datos de prueba
  *          http://tphangout.com/how-to-encrypt-passwords-or-other-data-before-saving-it-in-mongodb/
@@ -11,6 +11,7 @@
 
 'use strict';
 var MongoClient = require('mongodb').MongoClient;
+var ObjectId    = require('mongodb').ObjectID;
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
@@ -19,9 +20,13 @@ MongoClient.connect(
     function(err, db) {
         if (err) throw err;
         else {
-            console.log("Conectado, procediendo...")
+            console.log("Conectado, procediendo...");
+            var _id = new ObjectId();
+            db.collection('notes').drop();
+            db.collection('users').drop();
             db.createCollection('notes', function (err, collection) {
                 collection.insert({
+                    '_id':_id,
                     'fecha': '01/01/1970',
                     'texto': 'Prueba',
                     'fichero': 'nodejs-light.png'

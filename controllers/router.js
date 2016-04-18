@@ -2,7 +2,7 @@
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
  * Fichero: server.js
- * Fecha: 17/4/2016
+ * Fecha: 18/4/2016
  * Funcion: Gestiona las peticiones, pasandoselas al handler, sirviendo el fichero, o devolviendo un error
  */
 

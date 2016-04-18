@@ -2,7 +2,7 @@
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
  * Fichero: server.js
- * Fecha: 17/4/2016
+ * Fecha: 18/4/2016
  * Funcion: Funciones y Endpoints del sistema
  */
 
@@ -11,7 +11,7 @@ var querystring = require("querystring"),
     fs = require("fs"),
     formidable = require("formidable"),
     url = require("url"),
-    mysql = require("./mysql-connector");
+    db = require("./mongodb-connector");
 
 
 var PATH = "ficheros/";
@@ -25,7 +25,7 @@ var PATH = "ficheros/";
 function show(response) {
     console.log("Request handler 'show' was called.");
     var aux = header+tabla;
-    mysql.FindAll(function(res){
+    db.FindAll(function(res){
         for (var n = 0; n<res.length;n++){
             aux +='<tr><td><a href="showMemo?id='+res[n].id+'" class="btn btn-xs btn-info">' +
                 '<span class="glyphicon glyphicon-tag"></span></a></td>'+
@@ -61,14 +61,14 @@ function setMemo(response, request) {
                 if(err){
                     console.log("Error");
                 }else{
-                    mysql.addNote(fields.fecha,fields.texto,nombre, function(res){
+                    db.addNote(fields.fecha,fields.texto,nombre, function(res){
                         console.log();
                     });
                 }
 
             });
         }else{
-            mysql.addNote(fields.fecha, fields.texto, "null", function(res){
+            db.addNote(fields.fecha, fields.texto, "null", function(res){
                 console.log();
             }); 
         }
@@ -86,9 +86,9 @@ function setMemo(response, request) {
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
-    mysql.DeleteByID(params.query.id,function(res){
+    db.DeleteByID(params.query.id,function(res){
         if (params.query.fichero != "null"){
-            mysql.isUsed(params.query.fichero,function(res) {
+            db.isUsed(params.query.fichero,function(res) {
                 if (res[0].total == 0) {
                     fs.unlink(PATH + params.query.fichero, function (err) {
                         if (err) console.log("Error al eliminar fichero");
@@ -112,7 +112,7 @@ function showMemo(response, request){
     console.log("Request handler 'showMemo' was called.");
     var aux = header + tabla;
     var params = url.parse(request.url,true);
-    mysql.FindByID(params.query.id,function(res){
+    db.FindByID(params.query.id,function(res){
         aux +='<tr><td><a class="btn btn-xs btn-info" href="showMemo?id='+res[0].id+'">' +
             '<span class="glyphicon glyphicon-tag"></span></a></td>'+
             '<td>"'+res[0].fecha+'"</td>'+
@@ -131,10 +131,15 @@ function showMemo(response, request){
 
 }
 
+function login() {
+
+}
+
 exports.show = show;
 exports.setMemo = setMemo;
 exports.deleteMemo = deleteMemo;
 exports.showMemo = showMemo;
+exports.login = login;
 
 
 /**
@@ -148,7 +153,7 @@ var header = '<!DOCTYPE html>' +
     '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>'+
     '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script></head>';
 
-var logIn = ''+
+var log = '<body>'+
     '<div class="container">' +
     '<div class="row">'+
     '<div class="span12">'+
@@ -179,6 +184,45 @@ var logIn = ''+
     '</div>'+
     '</div>'+
     '</div>';
+
+var reg = '<body>'+
+    '<form class="form-horizontal" action="" method="POST">'+
+    '<fieldset>'+
+    '<div id="legend">'+
+    '<legend class="">Register</legend>'+
+    '</div>'+
+    '<div class="control-group">'+
+    '<label class="control-label" for="username">Username</label>'+
+    '<div class="controls">'+
+    '<input type="text" id="username" name="username" placeholder="" class="input-xlarge">'+
+    '<p class="help-block">Username can contain any letters or numbers, without spaces</p>'+
+    '</div>'+
+    '</div>'+
+
+    '<div class="control-group">'+
+    '<label class="control-label" for="password">Password</label>'+
+    '<div class="controls">'+
+    '<input type="password" id="password" name="password" placeholder="" class="input-xlarge">'+
+    '<p class="help-block">Password should be at least 4 characters</p>'+
+    '</div>'+
+    '</div>'+
+
+    '<div class="control-group">'+
+    '<label class="control-label" for="password_confirm">Password (Confirm)</label>'+
+    '<div class="controls">'+
+    '<input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">'+
+    '<p class="help-block">Please confirm password</p>'+
+    '</div>'+
+    '</div>'+
+
+    '<div class="control-group">'+
+    '<div class="controls">'+
+    '<button class="btn btn-success">Register</button>'+
+    '</div>'+
+    '</div>'+
+    '</fieldset>'+
+    '</form>';
+        
 
 
 var tabla  = '<body>' +
