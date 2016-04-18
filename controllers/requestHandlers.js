@@ -113,8 +113,8 @@ function showMemo(response, request){
     var aux = header + tabla;
     var params = url.parse(request.url,true);
     mysql.FindByID(params.query.id,function(res){
-        aux +='<tr><td><a class="btn btn-default" href="showMemo?id='+res[0].id+'">' +
-            '<span class="glyphicon glyphicon-search"></span></a></td>'+
+        aux +='<tr><td><a class="btn btn-xs btn-info" href="showMemo?id='+res[0].id+'">' +
+            '<span class="glyphicon glyphicon-tag"></span></a></td>'+
             '<td>"'+res[0].fecha+'"</td>'+
             '<td>"'+res[0].texto+'"</td>';
         if (res[0].fichero=="null"){
@@ -122,9 +122,8 @@ function showMemo(response, request){
         }else{
             aux += '<td><a href="'+PATH+res[0].fichero+'">'+res[0].fichero+'</a></td>';
         }
-        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0].id+'">' +
+        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0].id+"&fichero="+res[0].fichero+'">' +
             '<span class="glyphicon glyphicon-trash"></span></td>';
-        console.log(aux);
         response.writeHead(200, {"Content-Type": "text/html"});
         response.write(aux);
         response.end();
