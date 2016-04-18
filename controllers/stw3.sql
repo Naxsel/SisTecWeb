@@ -19,4 +19,4 @@ CREATE TABLE stw3.notes (
 ) AUTO_INCREMENT=1;
 
 
-INSERT INTO stw3.notes (fecha,texto,fichero) VALUES ('01/01/1111','Texto','nodejs-light.png');
+INSERT INTO stw3.notes (fecha,texto,fichero) VALUES ('2016-04-02','Texto','nodejs-light.png');
