@@ -141,7 +141,41 @@ exports.showMemo = showMemo;
 /**
  *  Fragmentos de HTML usados en las funciones.
  */
-var tabla  = '<!DOCTYPE html>' +
+
+var logIn = ''+
+    '<div class="container">' +
+        '<div class="row">'+
+            '<div class="span12">'+
+                '<form class="form-horizontal" action="" method="POST">'+
+                    '<fieldset>' +
+                    '<div id="legend">'+
+                        '<legend class="">Login</legend>'+
+                    '</div>'+
+                    '<div class="control-group">'+
+                        '<label class="control-label"  for="username">Username</label>'+
+                        '<div class="controls">'+
+                            '<input type="text" id="username" name="username" placeholder="" class="input-xlarge">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="control-group">'+
+                        '<label class="control-label" for="password">Password</label>'+
+                        '<div class="controls">'+
+                            '<input type="password" id="password" name="password" placeholder="" class="input-xlarge">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="control-group">'+
+                        '<div class="controls">'+
+                            '<button class="btn btn-success">Login</button>'+
+                        '</div>'+
+                    '</div>'+
+                    '</fieldset>'+
+                '</form>'+
+            '</div>'+
+        '</div>'+
+    '</div>';
+
+var tabla  = ''
+    '<!DOCTYPE html>' +
     '<html lang="en"><head><title>Gestor Tareas</title>'+
     '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
     '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">'+
@@ -150,7 +184,8 @@ var tabla  = '<!DOCTYPE html>' +
     '</head><body><div class="container"><h2>Gestor Tareas</h2><table class="table"><thead>'+
     '<tr><th>Tarea</th><th>Fecha Limite</th><th>Comentarios</th><th>Fichero</th><th>Eliminar</th></tr></thead><tbody>';
 
-var memo = '<!DOCTYPE html>' +
+var memo = ''+
+    '<!DOCTYPE html>' +
     '<html lang="en"><head><title>Tarea</title>'+
     '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
     '<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">'+
