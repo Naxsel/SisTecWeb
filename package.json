@@ -5,5 +5,7 @@
   "dependencies": {
     "mongodb": "^1.4.7"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "bcrypt": "^0.8.5"
+  }
 }
