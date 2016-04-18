@@ -1,7 +1,7 @@
 {
-  "name": "mongodb-test",
-  "version": "0.0.1",
-  "description": "",
+  "name": "Practica4",
+  "version": "1.0.0",
+  "description": "Ampliación practica 3 integrando sistema de usuarios y mongodb",
   "dependencies": {
     "mongodb": "^1.4.7"
   },
