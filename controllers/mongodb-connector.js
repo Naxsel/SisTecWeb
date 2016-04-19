@@ -51,10 +51,7 @@ module.exports = {
 
 
     DeleteByID: function (_id,callback) {
-        console.log(_id);
-        var id = new ObjectID(_id);
-        console.log(id);
-        connection.collection('notes').remove({'_id':id},function (err,res) {
+        connection.collection('notes').remove({'_id':ObjectID(_id)},function (err,res) {
             if(err) throw err;
             connection.collection('notes').find().toArray(function (err,res) {
                 if(err) throw err;
@@ -66,11 +63,9 @@ module.exports = {
 
 
     isUsed: function (fichero, callback) {
-        connection.collection('notes').find({'fichero':fichero}).count(function (err,res) {
+        connection.collection('notes').find({'fichero':fichero}).toArray(function (err,res) {
             if(err) throw err;
-            console.log(res);
-            callback(count);
-
+            callback(res.length);
         });
     },
 

@@ -86,15 +86,10 @@ function setMemo(response, request) {
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
-    console.log(params.query);
-
     db.DeleteByID(params.query.id,function(res){
-        console.log("2");
         if (params.query.fichero != "null"){
-            console.log("2");
             db.isUsed(params.query.fichero,function(res) {
-                if (res[0].total == 0) {
-                    console.log("2");
+                if (res == 0) {
                     fs.unlink(PATH + params.query.fichero, function (err) {
                         if (err) console.log("Error al eliminar fichero");
                     });
