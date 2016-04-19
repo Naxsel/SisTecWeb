@@ -11,7 +11,6 @@
 
 'use strict';
 var MongoClient = require('mongodb').MongoClient;
-var ObjectId    = require('mongodb').ObjectID;
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
@@ -21,13 +20,11 @@ MongoClient.connect(
         if (err) throw err;
         else {
             console.log("Conectado, procediendo...");
-            var _id = new ObjectId();
             db.collection('notes').drop();
             db.collection('users').drop();
             db.createCollection('notes', function (err, collection) {
                 collection.insert({
-                    '_id':_id,
-                    'fecha': '01/01/1970',
+                    'fecha': '1970-01-01',
                     'texto': 'Prueba',
                     'fichero': 'nodejs-light.png'
                 }, function (err, res) {

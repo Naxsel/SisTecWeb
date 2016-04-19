@@ -6,7 +6,7 @@
  * Funcion: Funciones y Endpoints del sistema
  */
 
-
+'use strict';
 var querystring = require("querystring"),
     fs = require("fs"),
     formidable = require("formidable"),
@@ -27,7 +27,7 @@ function show(response) {
     var aux = header+tabla;
     db.FindAll(function(res){
         for (var n = 0; n<res.length;n++){
-            aux +='<tr><td><a href="showMemo?id='+res[n].id+'" class="btn btn-xs btn-info">' +
+            aux +='<tr><td><a href="showMemo?_id='+res[n]._id+'" class="btn btn-xs btn-info">' +
                 '<span class="glyphicon glyphicon-tag"></span></a></td>'+
                 '<td>"'+res[n].fecha+'"</td>'+
                 '<td>"'+res[n].texto+'"</td>';
@@ -36,7 +36,7 @@ function show(response) {
             }else{
                 aux += '<td><a href="'+PATH+res[n].fichero+'">'+res[n].fichero+'</a></td>';
             }
-            aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n].id+"&fichero="+res[n].fichero+'">' +
+            aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[n]._id+"&fichero="+res[n].fichero+'">' +
                 '<span class="glyphicon glyphicon-trash"></span></td>';
         }
         aux+=form;
@@ -86,10 +86,17 @@ function setMemo(response, request) {
 function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
-    db.DeleteByID(params.query.id,function(res){
+    console.log("1");
+
+    db.DeleteByID(params.query._id,function(res){
+        console.log("1");
         if (params.query.fichero != "null"){
+            console.log("1");
+
             db.isUsed(params.query.fichero,function(res) {
                 if (res[0].total == 0) {
+                    console.log("1");
+
                     fs.unlink(PATH + params.query.fichero, function (err) {
                         if (err) console.log("Error al eliminar fichero");
                     });
@@ -108,12 +115,13 @@ function deleteMemo(response, request) {
  * @param response
  * @param request
  */
-function showMemo(response, request){
+function showMemo(response, request){ 
     console.log("Request handler 'showMemo' was called.");
     var aux = header + tabla;
     var params = url.parse(request.url,true);
-    db.FindByID(params.query.id,function(res){
-        aux +='<tr><td><a class="btn btn-xs btn-info" href="showMemo?id='+res[0].id+'">' +
+    db.FindByID(params.query._id,function(res){
+        console.log(res);
+        aux +='<tr><td><a class="btn btn-xs btn-info" href="showMemo?_id='+res[0]._id+'">' +
             '<span class="glyphicon glyphicon-tag"></span></a></td>'+
             '<td>"'+res[0].fecha+'"</td>'+
             '<td>"'+res[0].texto+'"</td>';
@@ -122,7 +130,7 @@ function showMemo(response, request){
         }else{
             aux += '<td><a href="'+PATH+res[0].fichero+'">'+res[0].fichero+'</a></td>';
         }
-        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0].id+"&fichero="+res[0].fichero+'">' +
+        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?_id='+res[0]._id+"&fichero="+res[0].fichero+'">' +
             '<span class="glyphicon glyphicon-trash"></span></td>';
         response.writeHead(200, {"Content-Type": "text/html"});
         response.write(aux);

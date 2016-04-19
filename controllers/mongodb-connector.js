@@ -28,8 +28,7 @@ module.exports = {
     },
 
     addNote: function (fecha,texto,fichero,callback) {
-        var id = new ObjectID();
-        connection.collection('notes').insert({'id':id,'fecha':fecha,'text':texto,'fichero':fichero},function (err,res) {
+        connection.collection('notes').insert({'fecha':fecha,'texto':texto,'fichero':fichero},function (err,res) {
             if(err) throw err;
             callback(res);
         })
@@ -43,16 +42,16 @@ module.exports = {
     },
 
 
-    FindByID: function (id,callback) {
-        connection.collection('notes').find({'id':id}).toArray(function (err,res) {
+    FindByID: function (_id,callback) {
+        connection.collection('notes').find({'_id':ObjectId(_id)}).toArray(function (err,res) {
             if(err) throw err;
             callback(res);
         });
     },
 
 
-    DeleteByID: function (id,callback) {
-        connection.collection('notes').remove({'id':id}).toArray(function (err,res) {
+    DeleteByID: function (_id,callback) {
+        connection.collection('notes').remove({'_id':ObjectId(_id)},function (err,res) {
             if(err) throw err;
             callback(res);
         });
@@ -61,9 +60,12 @@ module.exports = {
 
     isUsed: function (fichero, callback) {
         connection.collection('notes').find({'fichero':fichero}).toArray(function (err,res) {
+            console.log(res);
             if(err) throw err;
             res.count(function(err,count){
+                console.log(count);
                 if(err) throw err;
+                console.log(count);
                 callback(count);
             });
         });
