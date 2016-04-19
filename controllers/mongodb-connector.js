@@ -10,7 +10,7 @@
 
 'use strict';
 var MongoClient = require('mongodb').MongoClient;
-var ObjectId    = require('mongodb').ObjectID;
+var ObjectID    = require('mongodb').ObjectID;
 var bcrypt      = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
@@ -43,7 +43,7 @@ module.exports = {
 
 
     FindByID: function (_id,callback) {
-        connection.collection('notes').find({'_id':ObjectId(_id)}).toArray(function (err,res) {
+        connection.collection('notes').find({'_id':ObjectID(_id)}).toArray(function (err,res) {
             if(err) throw err;
             callback(res);
         });
@@ -51,23 +51,26 @@ module.exports = {
 
 
     DeleteByID: function (_id,callback) {
-        connection.collection('notes').remove({'_id':ObjectId(_id)},function (err,res) {
+        console.log(_id);
+        var id = new ObjectID(_id);
+        console.log(id);
+        connection.collection('notes').remove({'_id':id},function (err,res) {
             if(err) throw err;
+            connection.collection('notes').find().toArray(function (err,res) {
+                if(err) throw err;
+                console.log(res);
+            });
             callback(res);
         });
     },
 
 
     isUsed: function (fichero, callback) {
-        connection.collection('notes').find({'fichero':fichero}).toArray(function (err,res) {
-            console.log(res);
+        connection.collection('notes').find({'fichero':fichero}).count(function (err,res) {
             if(err) throw err;
-            res.count(function(err,count){
-                console.log(count);
-                if(err) throw err;
-                console.log(count);
-                callback(count);
-            });
+            console.log(res);
+            callback(count);
+
         });
     },
 
