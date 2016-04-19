@@ -123,7 +123,7 @@ function showMemo(response, request){
         }else{
             aux += '<td><a href="'+PATH+res[0].fichero+'">'+res[0].fichero+'</a></td>';
         }
-        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?_id='+res[0]._id+"&fichero="+res[0].fichero+'">' +
+        aux+= '<td><a class = "btn btn-danger btn-xs" href="deleteMemo?id='+res[0]._id+"&fichero="+res[0].fichero+'">' +
             '<span class="glyphicon glyphicon-trash"></span></td>';
         response.writeHead(200, {"Content-Type": "text/html"});
         response.write(aux);
