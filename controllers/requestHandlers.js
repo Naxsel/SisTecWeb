@@ -48,6 +48,7 @@ function show(response) {
 
 /**
  * Procedimiento para añadir una nueva tarea al sistema
+ * Los ficheros se almacenan en la carpeta ficheros
  * @param response
  * @param request
  */
@@ -79,7 +80,8 @@ function setMemo(response, request) {
 }
 
 /**
- * Elimina un elemento de la lista de tareas
+ * Elimina un elemento de la lista de tareas.
+ * Además elimina el fichero asociado, si procede, si es el único usuario que vinculaba ese fichero.
  * @param response
  * @param request
  */
@@ -141,6 +143,7 @@ exports.showMemo = showMemo;
  *  Fragmentos de HTML usados en las funciones.
  */
 
+//Cabecera
 var header = '<!DOCTYPE html>' +
     '<html lang="en"><head><title>Gestor Tareas</title>'+
     '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
@@ -148,6 +151,7 @@ var header = '<!DOCTYPE html>' +
     '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>'+
     '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script></head>';
 
+//Tabla
 var tabla  = '<body>' +
     '<div class="container">' +
     '<h2>Gestor Tareas</h2>' +
@@ -161,7 +165,7 @@ var tabla  = '<body>' +
     '</tr></thead>' +
     '<tbody>';
 
-
+//Formulario
 var form = '</tbody></table></br></br><h4>Añade una tarea</h4>' +
     '<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/setMemo" method="post">' +
     '   <div class="form-group">'+

@@ -4,6 +4,7 @@
 * Fichero: stw3.sql
 * Fecha: 17/4/2016
 * Funcion: Prepara la base de datos para el correcto funcionamiento del programa
+*          Incluye una tarea de muestra.
 */
 
 CREATE DATABASE IF NOT EXISTS stw3;
