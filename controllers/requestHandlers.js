@@ -27,11 +27,11 @@ function home(response){
 }
 
 /**
- * Muestra la lista de todos los elementos disponibles. Garantiza que se haya logeado un usuario.
+ * Muestra la lista de todos los elementos disponibles.
  * Ademas incluye un formulario para añadir nuevas tareas.
  * @param response
  */
-function show(response,token) {
+function show(response) {
     console.log("Request handler 'show' was called.");
     var aux = header+tabla;
     db.FindAll(function(res){
@@ -57,11 +57,12 @@ function show(response,token) {
 }
 
 /**
- * Procedimiento para añadir una nueva tarea al sistema
+ * Procedimiento para añadir una nueva tarea al sistema. Si hay un fichero adjunto, lo almacen en la ruta
+ * fichero/"nombre_fichero"
  * @param response
  * @param request
  */
-function setMemo(response, request,token) {
+function setMemo(response, request) {
     console.log("Request handler 'setMemo' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,fields,files){
@@ -93,7 +94,7 @@ function setMemo(response, request,token) {
  * @param response
  * @param request
  */
-function deleteMemo(response, request, token) {
+function deleteMemo(response, request) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
     db.DeleteByID(params.query.id,function(res){
@@ -118,7 +119,7 @@ function deleteMemo(response, request, token) {
  * @param response
  * @param request
  */
-function showMemo(response, request,token){
+function showMemo(response, request){
     console.log("Request handler 'showMemo' was called.");
     var aux = header + tabla;
     var params = url.parse(request.url,true);
@@ -142,6 +143,12 @@ function showMemo(response, request,token){
 
 }
 
+/**
+ * Funcion de login de usuario. Comprueba los campos del formulario y actua en consecuencia.
+ * Si todo es correcto se redirige al panel de tareas
+ * @param response
+ * @param request
+ */
 function login(response, request) {
     console.log("Request handler 'logIn' was called.");
     var parse = new formidable.IncomingForm();
@@ -161,6 +168,11 @@ function login(response, request) {
     });
 }
 
+/**
+ * Funcion de registro de usuario. Si todo es correcto se notifica al usuario y se vuelve al menu de login
+ * @param response
+ * @param request
+ */
 function register(response, request){
     console.log("Request handler 'register' was called.");
     var parse = new formidable.IncomingForm();
@@ -178,13 +190,13 @@ function register(response, request){
                     }else{
                         db.addUser(params.username,params.password,function(res){
                             var aux = header+log;
+                            aux += '<h4>Registro completado</h4>';
                             response.writeHead(302, {"Content-Type": "text/html"});
                             response.write(aux);
                             response.end();
                         });
                     }
                 });
-
             }else{
                 var aux = header+reg;
                 aux += '<h4>Password no cumple los requisitos</h4>';

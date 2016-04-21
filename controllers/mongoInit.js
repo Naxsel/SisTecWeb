@@ -4,7 +4,7 @@
  * Fichero: mongoInit.js
  * Fecha: 21/4/2016
  * Funcion: Prepara la base de datos para el correcto funcionamiento del programa
- *          Crea las 2 colecciones e inserta unos datos de prueba
+ *          Crea las 2 colecciones e inserta unos datos de prueba.
  *          http://tphangout.com/how-to-encrypt-passwords-or-other-data-before-saving-it-in-mongodb/
  */
 

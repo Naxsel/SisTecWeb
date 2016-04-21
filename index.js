@@ -6,7 +6,7 @@
  * Funcion: Main de la aplicación, carga los modulos necesarios y llama al server
  */
 
-
+'use strict';
 var server = require("./controllers/server");
 var router = require("./controllers/router");
 var requestHandlers = require("./controllers/requestHandlers");

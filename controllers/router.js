@@ -6,6 +6,7 @@
  * Funcion: Gestiona las peticiones, pasandoselas al handler, sirviendo el fichero, o devolviendo un error
  */
 
+'use strict';
 var fs = require('fs');
 
 function route(handle, pathname, response, request) {

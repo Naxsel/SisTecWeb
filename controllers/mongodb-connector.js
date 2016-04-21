@@ -14,6 +14,7 @@ var ObjectID    = require('mongodb').ObjectID;
 var bcrypt      = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
+/* variables */
 var url = 'mongodb://127.0.0.1:27017/stw4';
 var connection;
 var salt;
@@ -21,6 +22,10 @@ var salt;
 
 module.exports = {
 
+    /**
+     * Crea la conexion con la base de datos
+     * @param callback
+     */
     connect: function (callback) {
         MongoClient.connect(url, function (err,db) {
             connection = db;
@@ -32,6 +37,13 @@ module.exports = {
         });
     },
 
+    /**
+     * Añade una nota a la coleccion notas
+     * @param fecha
+     * @param texto
+     * @param fichero
+     * @param callback
+     */
     addNote: function (fecha,texto,fichero,callback) {
         connection.collection('notes').insert({'fecha':fecha,'texto':texto,'fichero':fichero},function (err,res) {
             if(err) throw err;
@@ -39,6 +51,11 @@ module.exports = {
         })
     },
 
+    /**
+     * Devuelve todos los elementos de la coleccion notas
+     * @param callback
+     * @constructor
+     */
     FindAll: function (callback) {
         connection.collection('notes').find().toArray(function (err,res) {
             if(err) throw err;
@@ -46,7 +63,12 @@ module.exports = {
         });
     },
 
-
+    /**
+     * Devuelve la nota identificada por el parametro _id
+     * @param _id
+     * @param callback
+     * @constructor
+     */
     FindByID: function (_id,callback) {
         connection.collection('notes').find({'_id':ObjectID(_id)}).toArray(function (err,res) {
             if(err) throw err;
@@ -55,6 +77,12 @@ module.exports = {
     },
 
 
+    /**
+     * Borra la nota identificada por el parametro _id
+     * @param _id
+     * @param callback
+     * @constructor
+     */
     DeleteByID: function (_id,callback) {
         connection.collection('notes').remove({'_id':ObjectID(_id)},function (err,res) {
             if(err) throw err;
@@ -67,6 +95,11 @@ module.exports = {
     },
 
 
+    /**
+     * Devuelve el numero de notas que comparten el parametro fichero
+     * @param fichero
+     * @param callback
+     */
     isUsed: function (fichero, callback) {
         connection.collection('notes').find({'fichero':fichero}).toArray(function (err,res) {
             if(err) throw err;
@@ -74,7 +107,12 @@ module.exports = {
         });
     },
 
-
+    /**
+     * Anade un usuario a la coleecion usuario. Los passwords se encrytan a la hora de insertarlos en la base de datos.
+     * @param user
+     * @param pass
+     * @param callback
+     */
     addUser: function (user,pass,callback) {
         bcrypt.hash(pass, salt, function(err,hash){
             if(err) throw err;
@@ -86,7 +124,12 @@ module.exports = {
         });
     },
 
-
+    /**
+     * Para los parametros user y pass, valida si ese nombre de usuario existe y tiene asociado ese password
+     * @param user
+     * @param pass
+     * @param callback
+     */
     validUser: function (user,pass,callback) {
         connection.collection('users').find({'user':user}).toArray(function (err,res) {
             if (err) throw err;
@@ -105,13 +148,11 @@ module.exports = {
         });
     },
 
-    existsUserID: function (id,callback) {
-        connection.collection('users').find({'id': ObjectID(id)}).toArray(function (err, res) {
-            if (err) throw err;
-            callback(res);
-        });
-    },
-
+    /**
+     * Comprueba si existe uno o varios usuarios coindicentes con el parametro user
+     * @param user
+     * @param callback
+     */
     existsUser: function (user,callback) {
         connection.collection('users').find({'user': user}).toArray(function (err, res) {
             if (err) throw err;
