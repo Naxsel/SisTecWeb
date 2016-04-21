@@ -2,7 +2,7 @@
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
  * Fichero: server.js
- * Fecha: 18/4/2016
+ * Fecha: 21/4/2016
  * Funcion: Funciones y Endpoints del sistema
  */
 
