@@ -147,7 +147,7 @@ function login(response, request) {
             console.log(res);
             if(res){
                 var aux = header + tabla;
-                response.writeHead(200, {"Content-Type": "text/html"});
+                response.writeHead(302, {"Content-Type": "text/html"});
                 response.write(aux);
                 response.end();
             }else{
@@ -163,10 +163,44 @@ function login(response, request) {
 
 function register(response, request){
     console.log("Request handler 'register' was called.");
-    var aux = header+reg;
-    response.writeHead(200, {"Content-Type": "text/html"});
-    response.write(aux);
-    response.end();
+    var parse = new formidable.IncomingForm();
+    parse.parse(request, function(err,params) {
+        console.log(params);
+        if(params.username){
+            if(params.password == params.repassword && params.password.length >= 4) {
+                db.existsUser(params.username,function(res){
+                    console.log(res);
+                    if(res.length>0){
+                        var aux = header+reg;
+                        aux += '<h4>Usuario ya existente</h4>';
+                        response.writeHead(400, {"Content-Type": "text/html"});
+                        response.write(aux);
+                        response.end();
+                    }else{
+                        db.addUser(params.username,params.password,function(res){
+                            var aux = header+log;
+                            response.writeHead(302, {"Content-Type": "text/html"});
+                            response.write(aux);
+                            response.end();
+                        });
+                    }
+                });
+
+            }else{
+                var aux = header+reg;
+                aux += '<h4>Password no cumple los requisitos</h4>';
+                response.writeHead(400, {"Content-Type": "text/html"});
+                response.write(aux);
+                response.end();
+            }
+        }else{
+            var aux = header+reg;
+            aux += '<h4>Password no cumple los requisitos</h4>';
+            response.writeHead(400, {"Content-Type": "text/html"});
+            response.write(aux);
+            response.end();
+        }
+    });
 }
 
 exports.home = home;
@@ -201,21 +235,21 @@ var log = '<body>'+
     '<div class="form-group">'+
     '<label c for="username">Username</label>'+
     '<div class="controls">'+
-    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge ">'+
+    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge" required>'+
     '</div>'+
     '</div>'+
 
     '<div class="form-group">'+
     '<label for="password">Password</label>'+
     '<div class="controls">'+
-    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
+    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge" required>'+
     '</div>'+
     '</div>'+
 
     '<div class="form-group">'+
     '<div class="controls">'+
     '<button class="btn btn-success" type="submit" style="margin: 10px";>Login</button>'+
-    '<a class="btn btn-info" href="register">Register</a>'+
+    '<a class="btn btn-info" href="/register">Register</a>'+
     '</div>'+
     '</div>'+
     '</fieldset>'+
@@ -225,7 +259,7 @@ var reg = '<body>'+
     '<div class="container">'+
     '<div class="row">'+
     '<div class="col-md-5">'+
-    '<form class="form-horizontal" action="/login" method="POST">'+
+    '<form class="form-horizontal" action="/register" method="POST">'+
     '<fieldset>'+
     '<div id="legend">'+
     '<legend class="">Register</legend>'+
@@ -233,21 +267,21 @@ var reg = '<body>'+
     '<div class="form-group">'+
     '<label c for="username">Username</label>'+
     '<div class="controls">'+
-    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge ">'+
+    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge" required>'+
     '<p class="help-block">Username can contain any letters or numbers, without spaces</p>'+
     '</div>'+
     '</div>'+
     '<div class="form-group">'+
     '<label for="password">Password</label>'+
     '<div class="controls">'+
-    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
+    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge" required>'+
     '<p class="help-block">Password should be at least 4 characters</p>'+
     '</div>'+
     '</div>'+
     '<div class="form-group">'+
     '<label for="password">Re:Password</label>'+
     '<div class="controls">'+
-    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
+    '<input type="password" id="repassword" name="repassword" placeholder="" class="form-control input-xlarge" required>'+
     '<p class="help-block">Confirm Password</p>'+
     '</div>'+
     '</div>'+

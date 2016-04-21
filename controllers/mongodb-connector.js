@@ -90,11 +90,14 @@ module.exports = {
     validUser: function (user,pass,callback) {
         connection.collection('users').find({'user':user}).toArray(function (err,res) {
             if (err) throw err;
+            console.log(res);
             if (res.length == 0) {
                 console.log("User not Found");
                 callback(false);
             } else {
-                bcrypt.compare(pass, res.pass, function (err, res) {
+                console.log(pass);
+                console.log(res[0].pass);
+                bcrypt.compare(pass, res[0].pass, function (err, res) {
                     console.log(res);
                     callback(res);
                 });
@@ -102,8 +105,15 @@ module.exports = {
         });
     },
 
-    existsUser: function (id,callback) {
+    existsUserID: function (id,callback) {
         connection.collection('users').find({'id': ObjectID(id)}).toArray(function (err, res) {
+            if (err) throw err;
+            callback(res);
+        });
+    },
+
+    existsUser: function (user,callback) {
+        connection.collection('users').find({'user': user}).toArray(function (err, res) {
             if (err) throw err;
             callback(res);
         });
