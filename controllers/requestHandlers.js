@@ -78,7 +78,7 @@ function setMemo(response, request) {
                 console.log();
             }); 
         }
-        response.writeHead(302, {'Location': '/'});
+        response.writeHead(302, {'Location': '/showAllMemo'});
         response.end();
     });
 
@@ -102,7 +102,7 @@ function deleteMemo(response, request) {
                 }
             });
         }
-        response.writeHead(302, {'Location': '/'});
+        response.writeHead(302, {'Location': '/showAllMemo'});
         response.end(); 
     });
 
@@ -146,11 +146,9 @@ function login(response, request) {
             if (err) console.log("ERROR");
             console.log(res);
             if(res){
-                // var aux = header + tabla;
-                // response.writeHead(302, {"Content-Type": "text/html"});
-                // response.write(aux);
-                // response.end();
-                show(response);
+                response.writeHead(302, {'Location': '/showAllMemo'});
+                response.end();
+
             }else{
                 var aux = header + log;
                 aux += '<h4>User/Password Incorrectos</h4>';
