@@ -16,6 +16,7 @@ var SALT_WORK_FACTOR = 10;
 
 var url = 'mongodb://127.0.0.1:27017/stw4';
 var connection;
+var salt;
 
 
 module.exports = {
@@ -23,6 +24,10 @@ module.exports = {
     connect: function (callback) {
         MongoClient.connect(url, function (err,db) {
             connection = db;
+                bcrypt.genSalt(SALT_WORK_FACTOR, function(err,_salt) {
+                    if (err) return next(err);
+                    salt = _salt;
+                });
             return callback(err);
         });
     },
@@ -70,15 +75,39 @@ module.exports = {
     },
 
 
-    addUser: function () {
-
+    addUser: function (user,pass,callback) {
+        bcrypt.hash(pass, salt, function(err,hash){
+            if(err) throw err;
+            pass=hash;
+            connection.collection('users').insert({'user':user,'pass':pass},function (err,res) {
+                if(err) throw err;
+                callback(res);
+            });
+        });
     },
 
 
-    FindUser: function () {
-
+    validUser: function (user,pass,callback) {
+        connection.collection('users').find({'user':user}).toArray(function (err,res) {
+            if (err) throw err;
+            if (res.length == 0) {
+                console.log("User not Found");
+                callback(false);
+            } else {
+                bcrypt.compare(pass, res.pass, function (err, res) {
+                    console.log(res);
+                    callback(res);
+                });
+            }
+        });
     },
 
+    existsUser: function (id,callback) {
+        connection.collection('users').find({'id': ObjectID(id)}).toArray(function (err, res) {
+            if (err) throw err;
+            callback(res);
+        });
+    },
 
 }
 

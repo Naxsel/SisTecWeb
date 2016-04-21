@@ -12,9 +12,11 @@ var router = require("./controllers/router");
 var requestHandlers = require("./controllers/requestHandlers");
 
 var handle = {};
-handle["/"] = requestHandlers.show;
+handle["/"] = requestHandlers.home;
 handle["/setMemo"] = requestHandlers.setMemo;
 handle["/deleteMemo"] = requestHandlers.deleteMemo;
 handle["/showAllMemo"] = requestHandlers.show;
 handle["/showMemo"] = requestHandlers.showMemo;
+handle["/login"] = requestHandlers.login;
+handle["/register"] = requestHandlers.register;
 server.start(router.route, handle);

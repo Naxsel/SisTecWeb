@@ -8,7 +8,6 @@
 
 var http = require("http");
 var url = require("url");
-
 var db = require('./mongodb-connector');
 
 function start(route, handle) {
@@ -19,9 +18,10 @@ function start(route, handle) {
     } 
     db.connect(function (err) {
         if (err) throw error("Error al conectar con la base de datos");
+        http.createServer(onRequest).listen(8080);
+        console.log("Server has started.");
     });
-    http.createServer(onRequest).listen(8080);
-    console.log("Server has started.");
+
 }
 exports.start = start;
 

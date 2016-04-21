@@ -16,6 +16,12 @@ var querystring = require("querystring"),
 
 var PATH = "ficheros/";
 
+function home(response){
+    var aux = header+log;
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write(aux);
+    response.end();
+}
 
 /**
  * Muestra la lista de todos los elementos disponibles. Es la página princial
@@ -132,16 +138,44 @@ function showMemo(response, request){
 
 }
 
-function login() {
-
+function login(response, request) {
+    console.log("Request handler 'logIn' was called.");
+    var parse = new formidable.IncomingForm();
+    parse.parse(request, function(err,params) {
+        db.validUser(params.username,params.password, function(res){
+            if (err) console.log("ERROR");
+            console.log(res);
+            if(res){
+                var aux = header + tabla;
+                response.writeHead(200, {"Content-Type": "text/html"});
+                response.write(aux);
+                response.end();
+            }else{
+                var aux = header + log;
+                aux += '<h4>User/Password Incorrectos</h4>';
+                response.writeHead(400, {"Content-Type": "text/html"});
+                response.write(aux);
+                response.end();
+            }
+        })
+    });
 }
 
+function register(response, request){
+    console.log("Request handler 'register' was called.");
+    var aux = header+reg;
+    response.writeHead(200, {"Content-Type": "text/html"});
+    response.write(aux);
+    response.end();
+}
+
+exports.home = home;
 exports.show = show;
 exports.setMemo = setMemo;
 exports.deleteMemo = deleteMemo;
 exports.showMemo = showMemo;
 exports.login = login;
-
+exports.register = register;
 
 /**
  *  Fragmentos de HTML usados en las funciones.
@@ -155,76 +189,75 @@ var header = '<!DOCTYPE html>' +
     '<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script></head>';
 
 var log = '<body>'+
-    '<div class="container">' +
+    '<div class="container">'+
     '<div class="row">'+
-    '<div class="span12">'+
-    '<form class="form-horizontal" action="" method="POST">'+
-    '<fieldset>' +
+    '<div class="col-md-5">'+
+    '<form class="form-horizontal" action="/login" method="POST">'+
+    '<fieldset>'+
     '<div id="legend">'+
     '<legend class="">Login</legend>'+
     '</div>'+
-    '<div class="control-group">'+
-    '<label class="control-label"  for="username">Username</label>'+
-    '<div class="controls">'+
-    '<input type="text" id="username" name="username" placeholder="" class="input-xlarge">'+
-    '</div>'+
-    '</div>'+
-    '<div class="control-group">'+
-    '<label class="control-label" for="password">Password</label>'+
-    '<div class="controls">'+
-    '<input type="password" id="password" name="password" placeholder="" class="input-xlarge">'+
-    '</div>'+
-    '</div>'+
-    '<div class="control-group">'+
-    '<div class="controls">'+
-    '<button class="btn btn-success">Login</button>'+
-    '</div>'+
-    '</div>'+
-    '</fieldset>'+
-    '</form>'+
-    '</div>'+
-    '</div>'+
-    '</div>';
 
-var reg = '<body>'+
-    '<form class="form-horizontal" action="" method="POST">'+
-    '<fieldset>'+
-    '<div id="legend">'+
-    '<legend class="">Register</legend>'+
-    '</div>'+
-    '<div class="control-group">'+
-    '<label class="control-label" for="username">Username</label>'+
+    '<div class="form-group">'+
+    '<label c for="username">Username</label>'+
     '<div class="controls">'+
-    '<input type="text" id="username" name="username" placeholder="" class="input-xlarge">'+
-    '<p class="help-block">Username can contain any letters or numbers, without spaces</p>'+
+    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge ">'+
     '</div>'+
     '</div>'+
 
-    '<div class="control-group">'+
-    '<label class="control-label" for="password">Password</label>'+
+    '<div class="form-group">'+
+    '<label for="password">Password</label>'+
     '<div class="controls">'+
-    '<input type="password" id="password" name="password" placeholder="" class="input-xlarge">'+
-    '<p class="help-block">Password should be at least 4 characters</p>'+
+    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
     '</div>'+
     '</div>'+
 
-    '<div class="control-group">'+
-    '<label class="control-label" for="password_confirm">Password (Confirm)</label>'+
+    '<div class="form-group">'+
     '<div class="controls">'+
-    '<input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">'+
-    '<p class="help-block">Please confirm password</p>'+
-    '</div>'+
-    '</div>'+
-
-    '<div class="control-group">'+
-    '<div class="controls">'+
-    '<button class="btn btn-success">Register</button>'+
+    '<button class="btn btn-success" type="submit" style="margin: 10px";>Login</button>'+
+    '<a class="btn btn-info" href="register">Register</a>'+
     '</div>'+
     '</div>'+
     '</fieldset>'+
     '</form>';
-        
 
+var reg = '<body>'+
+    '<div class="container">'+
+    '<div class="row">'+
+    '<div class="col-md-5">'+
+    '<form class="form-horizontal" action="/login" method="POST">'+
+    '<fieldset>'+
+    '<div id="legend">'+
+    '<legend class="">Register</legend>'+
+    '</div>'+
+    '<div class="form-group">'+
+    '<label c for="username">Username</label>'+
+    '<div class="controls">'+
+    '<input type="text" id="username" name="username" placeholder="" class="form-control input-xlarge ">'+
+    '<p class="help-block">Username can contain any letters or numbers, without spaces</p>'+
+    '</div>'+
+    '</div>'+
+    '<div class="form-group">'+
+    '<label for="password">Password</label>'+
+    '<div class="controls">'+
+    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
+    '<p class="help-block">Password should be at least 4 characters</p>'+
+    '</div>'+
+    '</div>'+
+    '<div class="form-group">'+
+    '<label for="password">Re:Password</label>'+
+    '<div class="controls">'+
+    '<input type="password" id="password" name="password" placeholder="" class="form-control input-xlarge">'+
+    '<p class="help-block">Confirm Password</p>'+
+    '</div>'+
+    '</div>'+
+    '<div class="form-group">'+
+    '<div class="controls">'+
+    '<button class="btn btn-success" type="submit" style="margin: 10px";>Register</button>'+
+    '</div>'+
+    '</div>'+
+    '</fieldset>'+
+    '</form>';
 
 var tabla  = '<body>' +
     '<div class="container">' +
@@ -238,7 +271,6 @@ var tabla  = '<body>' +
     '<th>Eliminar</th>' +
     '</tr></thead>' +
     '<tbody>';
-
 
 var form = '</tbody></table></br></br><h4>Añade una tarea</h4>' +
     '<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/setMemo" method="post">' +
