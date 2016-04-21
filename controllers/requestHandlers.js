@@ -13,9 +13,12 @@ var querystring = require("querystring"),
     url = require("url"),
     db = require("./mongodb-connector");
 
-
 var PATH = "ficheros/";
 
+/**
+ * Carga la página principal de login de usuario
+ * @param response
+ */
 function home(response){
     var aux = header+log;
     response.writeHead(200, {"Content-Type": "text/html"});
@@ -24,11 +27,11 @@ function home(response){
 }
 
 /**
- * Muestra la lista de todos los elementos disponibles. Es la página princial
+ * Muestra la lista de todos los elementos disponibles. Garantiza que se haya logeado un usuario.
  * Ademas incluye un formulario para añadir nuevas tareas.
  * @param response
  */
-function show(response) {
+function show(response,token) {
     console.log("Request handler 'show' was called.");
     var aux = header+tabla;
     db.FindAll(function(res){
@@ -50,6 +53,7 @@ function show(response) {
         response.write(aux);
         response.end();
     });
+
 }
 
 /**
@@ -57,7 +61,7 @@ function show(response) {
  * @param response
  * @param request
  */
-function setMemo(response, request) {
+function setMemo(response, request,token) {
     console.log("Request handler 'setMemo' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,fields,files){
@@ -89,7 +93,7 @@ function setMemo(response, request) {
  * @param response
  * @param request
  */
-function deleteMemo(response, request) {
+function deleteMemo(response, request, token) {
     console.log("Request handler 'deleteMemo' was called.");
     var params = url.parse(request.url,true);
     db.DeleteByID(params.query.id,function(res){
@@ -114,7 +118,7 @@ function deleteMemo(response, request) {
  * @param response
  * @param request
  */
-function showMemo(response, request){ 
+function showMemo(response, request,token){
     console.log("Request handler 'showMemo' was called.");
     var aux = header + tabla;
     var params = url.parse(request.url,true);
@@ -144,11 +148,8 @@ function login(response, request) {
     parse.parse(request, function(err,params) {
         db.validUser(params.username,params.password, function(res){
             if (err) console.log("ERROR");
-            console.log(res);
             if(res){
-                response.writeHead(302, {'Location': '/showAllMemo'});
-                response.end();
-
+                show(response,res._id);
             }else{
                 var aux = header + log;
                 aux += '<h4>User/Password Incorrectos</h4>';
@@ -164,7 +165,6 @@ function register(response, request){
     console.log("Request handler 'register' was called.");
     var parse = new formidable.IncomingForm();
     parse.parse(request, function(err,params) {
-        console.log(params);
         if(params.username){
             if(params.password == params.repassword && params.password.length >= 4) {
                 db.existsUser(params.username,function(res){
@@ -194,7 +194,6 @@ function register(response, request){
             }
         }else{
             var aux = header+reg;
-            aux += '<h4>Password no cumple los requisitos</h4>';
             response.writeHead(400, {"Content-Type": "text/html"});
             response.write(aux);
             response.end();
