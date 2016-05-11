@@ -1,12 +1,25 @@
+'use strict';
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoOp = require("./models/mongo");
 var router = express.Router();
+var server = require("./p4/server");
+var old_router = require("./p4/router");
+var requestHandlers = require("./p4/requestHandlers");
+var doRequest = require('request');
+
+var url2 = "http://localhost:8081"
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
+
+
 router.get("/",function(req,res){
-    res.json({"error" : false,"message" : "Hello World"});
+    doRequest.get(url2+"/", function(err,res,body){
+
+    });
 });
 
 router.route("/users")
@@ -27,9 +40,9 @@ router.route("/users")
         var response = {};
         // fetch email and password from REST request.
         // Add strict validation when you use this in Production.
-        db.userEmail = req.body.email;
+        db.user = req.body.email;
         // Hash the password using SHA1 algorithm.
-        db.userPassword = require('crypto')
+        db.pass = require('crypto')
             .createHash('sha1')
             .update(req.body.password)
             .digest('base64');
@@ -68,13 +81,13 @@ router.route("/users/:id")
             } else {
                 // we got data from Mongo.
                 // change it accordingly.
-                if (req.body.userEmail !== undefined) {
+                if (req.body.user !== undefined) {
                     // case where email needs to be updated.
-                    data.userEmail = req.body.userEmail;
+                    data.user = req.body.user;
                 }
-                if (req.body.userPassword !== undefined) {
+                if (req.body.pass !== undefined) {
                     // case where password needs to be updated
-                    data.userPassword = req.body.userPassword;
+                    data.pass = req.body.pass;
                 }
                 // save the data
                 data.save(function (err) {
@@ -111,7 +124,26 @@ router.route("/users/:id")
         });
     });
 
+router.route("/setMemo")
+    .get(function (req, res) {
+
+    });
+
+
+var handle = {};
+handle["/"] = requestHandlers.home;
+handle["/setMemo"] = requestHandlers.setMemo;
+handle["/deleteMemo"] = requestHandlers.deleteMemo;
+handle["/showAllMemo"] = requestHandlers.show;
+handle["/showMemo"] = requestHandlers.showMemo;
+handle["/login"] = requestHandlers.login;
+handle["/register"] = requestHandlers.register;
+server.start(old_router.route, handle);
+
 app.use('/',router);
 app.listen(8080);
 console.log("Listening to PORT 8080");
+
+
+
 

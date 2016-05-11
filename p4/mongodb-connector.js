@@ -15,7 +15,7 @@ var bcrypt      = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 /* variables */
-var url = 'mongodb://127.0.0.1:27017/stw5';
+var url = 'mongodb://127.0.0.1:27017/STW5';
 var connection;
 var salt;
 

@@ -4,8 +4,8 @@ mongoose.connect('mongodb://localhost:27017/STW5');
 var mongoSchema = mongoose.Schema;
 // create schema
 var userSchema = {
-    "userEmail" : String,
-    "userPassword" : String
+    "user" : String,
+    "pass" : String
 };
 // create model if not exists.
-module.exports = mongoose.model('userLogin',userSchema); 
+module.exports = mongoose.model('users',userSchema); 
