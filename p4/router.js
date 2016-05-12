@@ -1,7 +1,7 @@
 /**
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
- * Fichero: server.js
+ * Fichero: router.js
  * Fecha: 21/4/2016
  * Funcion: Gestiona las peticiones, pasandoselas al handler, sirviendo el fichero, o devolviendo un error
  */

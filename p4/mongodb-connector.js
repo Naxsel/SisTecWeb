@@ -1,7 +1,7 @@
 /**
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
- * Fichero: mongoInit.js
+ * Fichero: mongodb-connector.js
  * Fecha: 21/4/2016
  * Funcion: Prepara la base de datos para el correcto funcionamiento del programa
  *          Crea las 2 colecciones e inserta unos datos de prueba

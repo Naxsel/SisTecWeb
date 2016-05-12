@@ -1,3 +1,13 @@
+/**
+ * Autor: Alejandro Solanas Bonilla
+ * NIA: 647647
+ * Fichero: index.js
+ * Fecha: 12/5/2016
+ * Funcion: Main de la aplicación. Inicializa un servidor Rest con express en el puerto 8080 y el servidor de notas en
+ *          el puerto 8081. El servidor principal despliga una API con un recurso propio /users, y redireciona el resto
+ *          de las peticiones disponibles al servidor de notas
+ */
+
 'use strict';
 var express = require("express");
 var app = express();

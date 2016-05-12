@@ -1,7 +1,7 @@
 /**
  * Autor: Alejandro Solanas Bonilla
  * NIA: 647647
- * Fichero: server.js
+ * Fichero: requestHandlers.js
  * Fecha: 21/4/2016
  * Funcion: Funciones y Endpoints del sistema
  */

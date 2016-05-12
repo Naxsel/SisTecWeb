@@ -3,7 +3,7 @@
  * NIA: 647647
  * Fichero: server.js
  * Fecha: 21/4/2016
- * Funcion: Inicializa el servidor http y la conexion con la base de datos.
+ * Funcion: Inicializa el servidor http de notas y la conexion con la base de datos.
  */
 
 'use strict';
