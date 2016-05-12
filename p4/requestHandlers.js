@@ -53,7 +53,6 @@ function show(response) {
         response.write(aux);
         response.end();
     });
-
 }
 
 /**
@@ -76,7 +75,6 @@ function setMemo(response, request) {
                         console.log();
                     });
                 }
-
             });
         }else{
             db.addNote(fields.fecha, fields.texto, "null", function(res){
@@ -86,7 +84,6 @@ function setMemo(response, request) {
         response.writeHead(302, {'Location': '/showAllMemo'});
         response.end();
     });
-
 }
 
 /**
@@ -110,8 +107,6 @@ function deleteMemo(response, request) {
         response.writeHead(302, {'Location': '/showAllMemo'});
         response.end();
     });
-
-
 }
 
 /**
@@ -140,7 +135,6 @@ function showMemo(response, request){
         response.write(aux);
         response.end();
     });
-
 }
 
 /**

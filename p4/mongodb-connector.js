@@ -86,10 +86,6 @@ module.exports = {
     DeleteByID: function (_id,callback) {
         connection.collection('notes').remove({'_id':ObjectID(_id)},function (err,res) {
             if(err) throw err;
-            connection.collection('notes').find().toArray(function (err,res) {
-                if(err) throw err;
-                console.log(res);
-            });
             callback(res);
         });
     },

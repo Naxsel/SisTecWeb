@@ -9,17 +9,14 @@ var old_router = require("./p4/router");
 var requestHandlers = require("./p4/requestHandlers");
 var doRequest = require('request');
 
-var url2 = "http://localhost:8081"
-
+var url2 = "http://localhost:8081";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
-
 router.get("/",function(req,res){
-    doRequest.get(url2+"/", function(err,res,body){
-
-    });
+    console.log("Peticion para el servidor de notas, redireccionando");
+    res.redirect(url2+"/");
 });
 
 router.route("/users")
@@ -124,11 +121,18 @@ router.route("/users/:id")
         });
     });
 
-router.route("/setMemo")
+router.route("/login")
     .get(function (req, res) {
-
+        console.log("Peticion para el servidor de notas, redireccionando");
+        res.redirect(url2+"/");
     });
 
+
+router.route("/register")
+    .get(function (req, res) {
+        console.log("Peticion para el servidor de notas, redireccionando");
+        res.redirect(url2+"/register");
+    });
 
 var handle = {};
 handle["/"] = requestHandlers.home;
