@@ -144,6 +144,7 @@ router.route("/register")
         res.redirect(url2+"/register");
     });
 
+/* Handler del servidor de notas */
 var handle = {};
 handle["/"] = requestHandlers.home;
 handle["/setMemo"] = requestHandlers.setMemo;
