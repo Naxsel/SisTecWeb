@@ -11,7 +11,7 @@
     <title>Node/Angular Todo App</title>
 
     <!-- SCROLLS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <style>
         html                    { overflow-y:scroll; }
         body                    { padding-top:50px; }
@@ -21,12 +21,34 @@
     <!-- SPELLS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="core.js"></script>
 
 </head>
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
-    <div class="container">
+    <!--<div class="container">-->
+        <!--<h2>Gestor Tareas</h2>-->
+        <!--<table class="table"><thead>-->
+        <!--<tr>-->
+            <!--<th>Tarea</th>-->
+            <!--<th>Fecha Limite</th>-->
+            <!--<th>Comentarios</th>-->
+            <!--<th>Fichero</th>-->
+            <!--<th>Eliminar</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+            <!--<tr>-->
+                <!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <!--<td></td>-->
+            <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+
+    <!--</div>-->
 
         <!-- HEADER AND TODO COUNT -->
         <div class="jumbotron text-center">
@@ -40,7 +62,7 @@
                 <!-- LOOP OVER THE Users IN $scope.users -->
                 <div class="checkbox" ng-repeat="user in users">
                     <label>
-                        <input type="checkbox" ng-click="deleteUser(user._id)"> {{ user.userEmail }}
+                        <input type="checkbox" ng-click="deleteUser(user._id)"> {{ user.user }}
                     </label>
                 </div>
 
