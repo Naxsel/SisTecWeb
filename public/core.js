@@ -1,13 +1,21 @@
-// public/core.js
+/**
+ * Autor: Alejandro Solanas Bonilla
+ * NIA: 647647
+ * Fichero: core.js
+ * Fecha: 29/5/2016
+ * Funcion: Modulo y controlador principal de angular
+ */
+
 var GestionUsuarios = angular.module('GestionUsuarios', []);
 
 function mainController($scope, $http) {
     $scope.formData = {};
+    $scope.notes = {};
 
-    // when landing on the page, get all todos and show them
-    $http.get('/users')
+    // when landing on the page, get all notes
+    $http.get('/notes')
         .success(function(data) {
-            $scope.users = data.message;
+            $scope.notes = data.message;
             console.log(data);
         })
         .error(function(data) {
@@ -27,7 +35,7 @@ function mainController($scope, $http) {
             });
     };
 
-    // delete a todo after checking it
+    // delete a user after checking it
     $scope.deleteUser = function(id) {
         $http.delete('/users/' + id)
             .success(function(data) {
@@ -38,6 +46,18 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
+
+    //delete a note
+    $scope.removeNote = function(n) {
+        $http.delete('/notes/'+n._id)
+            .success(function(data) {
+                $scope.notas = data.notas;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    }
 
 }
 
